@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "declarationMap": true,
+    "incremental": true,
+    "target": "es2020",
+    "module": "CommonJS",
+    "declaration": true,
+    "types": ["node"],
+    "sourceMap": true,
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
+
+    "composite": true
+  }
+}

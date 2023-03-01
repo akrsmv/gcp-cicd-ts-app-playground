@@ -1,0 +1,73 @@
+[
+  {
+    "_id": "90cd7a0f-96b1-4e7d-acc3-7976cebf7fdf",
+    "colId": "a81bfcfe-ff0c-4b5a-8eb4-c46b2f7a01a3",
+    "containerId": "1fd328fd-fd9b-45ed-b5d0-0a257a7a303a",
+    "name": "prices",
+    "url": "http://127.0.0.1:7000/electricity/prices?y=1",
+    "method": "GET",
+    "sortNum": 60000,
+    "created": "2023-02-26T16:04:58.817Z",
+    "modified": "2023-02-28T20:15:25.638Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "r",
+        "value": "2023/1/29",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "d",
+        "value": "1",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "m",
+        "value": "1",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "y",
+        "value": "1",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "540784dc-795d-4df7-8c79-e01fc97d5c15",
+    "colId": "a81bfcfe-ff0c-4b5a-8eb4-c46b2f7a01a3",
+    "containerId": "31fef12b-03ea-45d6-ba8c-e7d398e6f668",
+    "name": "rebuild-price-index",
+    "url": "http://localhost:7000/admin/prices/index/rebuild",
+    "method": "POST",
+    "sortNum": 70000,
+    "created": "2023-02-26T18:21:27.825Z",
+    "modified": "2023-02-26T18:21:33.368Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "00ec76a3-d519-4043-b433-9b1e6f3626a2",
+    "colId": "a81bfcfe-ff0c-4b5a-8eb4-c46b2f7a01a3",
+    "containerId": "31fef12b-03ea-45d6-ba8c-e7d398e6f668",
+    "name": "sampledata",
+    "url": "http://localhost:7000/admin/sampledata/generate",
+    "method": "POST",
+    "sortNum": 80000,
+    "created": "2023-02-28T15:47:59.626Z",
+    "modified": "2023-02-28T17:42:36.616Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"start\": \"2019/01/01\",\n  \"end\": \"2023/02/28\",\n  \"randValueKey\": \"price\",\n  \"prefix\": \"prices\",\n  \"randValueRange\": [100,200],\n  \"additionalProps\": {\n    \"currency\": \"BGN\"\n  },\n  \"tickStep\": 3600000\n  \n}",
+      "form": []
+    },
+    "tests": []
+  }
+]

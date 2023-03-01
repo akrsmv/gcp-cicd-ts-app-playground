@@ -81,7 +81,8 @@ jobs:
         #     --quiet \
         #     --tag "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA"
         run: |-
-          docker run \
+          echo "tagging with gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA" \ 
+          && docker run \
           -v "$HOME"/.config/gcloud:/root/.config/gcloud \
           -v ${PWD}:/workspace \
           gcr.io/kaniko-project/executor:latest \

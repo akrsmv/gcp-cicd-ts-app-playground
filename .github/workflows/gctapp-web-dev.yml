@@ -75,18 +75,20 @@ jobs:
         uses: google-github-actions/setup-gcloud@v0.2.1
 
       # Build and push image to Google Container Registry
-      - name: Build & Push gcr.io/kaniko-project/executor:latest
-        args:
-          [
-            "--dockerfile=.docker/images/web",
-            "--context=dir://.",
-            "--destination=gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA",
-          ]
+      - name: Build & Push
         # run: |-
         #   gcloud builds submit \
         #     --quiet \
         #     --tag "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA"
-        # working-directory: .
+        run: |-
+          docker run \
+          -v "$HOME"/.config/gcloud:/root/.config/gcloud \
+          -v .:/workspace \
+          gcr.io/kaniko-project/executor:latest \
+          --dockerfile /workspace/.docker/images/web/Dockerfile \
+          --destination "gcr.io/$PROJECT_ID/$IMAGE_NAME:$TAG" \
+          --context dir:///workspace/
+        working-directory: .
 
       # Deploy image to Cloud Run
       - name: Deploy GCR

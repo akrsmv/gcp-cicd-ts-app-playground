@@ -86,7 +86,7 @@ jobs:
           -v ${PWD}:/workspace \
           gcr.io/kaniko-project/executor:latest \
           --dockerfile /workspace/.docker/images/web/Dockerfile \
-          --destination "gcr.io/$PROJECT_ID/$IMAGE_NAME:$TAG" \
+          --destination "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA" \
           --context dir:///workspace/
         working-directory: .
 

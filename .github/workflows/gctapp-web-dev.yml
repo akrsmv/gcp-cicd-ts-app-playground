@@ -37,7 +37,6 @@ jobs:
           restore-keys: |
             nodeModules-
       - name: Install dependencies
-        path: packages/web
         run: npm install
         env:
           CI: true

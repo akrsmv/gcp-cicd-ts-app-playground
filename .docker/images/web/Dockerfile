@@ -1,7 +1,8 @@
 FROM node:18.14.2-alpine3.17 as build
 WORKDIR /app
 COPY . ./
-RUN npm run web:prodbuild
+# building outside of docker for now, how github action cache the node_modules if in docker?
+# RUN npm run web:prodbuild
 
 # Local development image containing configuration for localhost API url
 FROM fholzer/nginx-brotli:v1.12.2

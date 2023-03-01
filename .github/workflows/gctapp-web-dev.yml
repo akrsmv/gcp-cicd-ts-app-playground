@@ -75,19 +75,19 @@ jobs:
         uses: google-github-actions/setup-gcloud@v0.2.1
 
       - name: gcr.io/kaniko-project/executor:latest
-        args:
-          [
-            "--dockerfile=.docker/images/web/Dockerfile",
-            "--context=dir://.",
-            "--destination=gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA",
-          ]
+        run: |-
+          --dockerfile=.docker/images/web/Dockerfile,
+          --context=dir://.,
+          --destination=gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA,
 
-      # # Build and push image to Google Container Registry
-      # - name: Build & Push
-      #   # run: |-
-      #   #   gcloud builds submit \
-      #   #     --quiet \
-      #   #     --tag "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA"
+      # Build and push image to Google Container Registry
+      - name: Build & Push
+        run: |-
+          gcloud builds submit \
+            --quiet \
+            --tag "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA"
+        working-directory: packages/web
+
       #   run: |-
       #     echo tagging with gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA \ 
       #     docker run \
@@ -99,13 +99,12 @@ jobs:
       #     --context dir:///workspace/
       #   working-directory: .
 
-      # # Deploy image to Cloud Run
-      # - name: Deploy GCR
-      #   run: |-
-      #     echo tagging with gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA \ 
-      #     gcloud run deploy "$SERVICE_NAME" \
-      #       --quiet \
-      #       --region "$RUN_REGION" \
-      #       --image "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA" \
-      #       --platform "managed" \
-      #       --allow-unauthenticated
+      # Deploy image to Cloud Run
+      - name: Deploy GCR
+        run: |-
+          gcloud run deploy "$SERVICE_NAME" \
+            --quiet \
+            --region "$RUN_REGION" \
+            --image "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA" \
+            --platform "managed" \
+            --allow-unauthenticated

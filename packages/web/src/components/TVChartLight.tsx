@@ -1,11 +1,9 @@
-import { createChart, ColorType, TimeScaleOptions } from 'lightweight-charts'
+import { createChart, ColorType } from 'lightweight-charts'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { GCTCheckBox, GCTContainerFullSpace, GCTContent1, GCTContentBox } from '../components-layout/Theme'
-import { usePriceStore } from '../stores/PricesDataStore'
+import { LoadDataParams, usePriceStore } from '../stores/PricesDataStore'
 
 export const TVChartLight = (props: any) => {
     const {
-        store,
         colors: {
             backgroundColor = 'white',
             lineColor = '#2962FF',
@@ -14,8 +12,9 @@ export const TVChartLight = (props: any) => {
             areaBottomColor = 'rgba(41, 98, 255, 0.28)',
         } = {},
     } = props
+    const priceStore = usePriceStore()
 
-    const [data, setData] = useState(usePriceStore().data)
+    const [data, setData] = useState(priceStore.data)
 
 
     // make sure you rerender when store updates
@@ -68,7 +67,7 @@ export const TVChartLight = (props: any) => {
         [data, backgroundColor, lineColor, textColor, areaTopColor, areaBottomColor]
     )
 
-    const loadData = useCallback(usePriceStore().load, [])
+    const loadData = useCallback((params: LoadDataParams) => priceStore.load(params), [priceStore])
 
     return (
         <div ref={chartContainerRef}>

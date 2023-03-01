@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { devtools, persist, subscribeWithSelector } from 'zustand/middleware'
+import { devtools, persist } from 'zustand/middleware'
 
 export type LoadDataParams = {
     count: number, type: "d" | "m" | "y"

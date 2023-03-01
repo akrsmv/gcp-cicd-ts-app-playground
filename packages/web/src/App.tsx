@@ -15,6 +15,7 @@ import { usePriceStore } from './stores/PricesDataStore';
 import { TOP_ROUTES, SIDE_ROUTES } from './components-layout/GctRoute';
 
 function App() {
+  //eslint-disable-next-line
   const [theme, _] = React.useState(defaultTheme)
   return (
     <BrowserRouter>

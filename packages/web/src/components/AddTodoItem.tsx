@@ -5,10 +5,11 @@ import { GCTButton, GCTCheckBox, GCTInput } from "../components-layout/Theme";
 
 export const AddTodoItem = () => {
   const _emptyNewItem: Omit<ITodoItemState, "id"> = { desc: "", labels: [] }
+  const todoStore = useCountStore()
   const [itemToAdd, setItemToAdd] = useState(_emptyNewItem)
 
   // pull necessary utilities from global model
-  const addTodo = useCallback(useCountStore().add, [])
+  const addTodo = useCallback((todo: Omit<ITodoItemState, "id">) => todoStore.add(todo), [todoStore])
 
   const handleAddNewItem = () => {
     // reset new item container only if adding successful

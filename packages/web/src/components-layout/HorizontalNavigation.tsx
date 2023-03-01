@@ -1,5 +1,5 @@
-import { NavLink, Route, Routes } from "react-router-dom";
-import { Project, PROJECT } from "../components/Project";
+import { NavLink } from "react-router-dom";
+import { PROJECT } from "../components/Project";
 
 export const HorizontalNavigation = () => (
     <>

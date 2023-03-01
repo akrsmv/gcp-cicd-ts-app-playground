@@ -13,9 +13,10 @@ export const PROJECT_NAMESPACE = "@gctapp"
 
 export const Project = (props: any) => {
     const { project_name } = props
+    const todoStore = useCountStore()
 
     // local state pulled from global store
-    const [projectTodoItems, setProjectTodoItems] = useState(useCountStore().items)
+    const [projectTodoItems, setProjectTodoItems] = useState(todoStore.items)
 
     // make sure you rerender when store updates
     useEffect(
@@ -26,8 +27,8 @@ export const Project = (props: any) => {
     )
 
     // pull necessary utilities from global state 
-    const removeTodo = useCallback(useCountStore().remove, [])
-    const updateTodo = useCallback(useCountStore().update, [])
+    const removeTodo = useCallback((id: string) => todoStore.remove(id), [todoStore])
+    const updateTodo = useCallback((id: string) => todoStore.update(id), [todoStore])
 
 
     return (

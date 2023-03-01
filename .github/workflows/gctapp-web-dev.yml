@@ -83,7 +83,7 @@ jobs:
         run: |-
           docker run \
           -v "$HOME"/.config/gcloud:/root/.config/gcloud \
-          -v .:/workspace \
+          -v ${PWD}:/workspace \
           gcr.io/kaniko-project/executor:latest \
           --dockerfile /workspace/.docker/images/web/Dockerfile \
           --destination "gcr.io/$PROJECT_ID/$IMAGE_NAME:$TAG" \

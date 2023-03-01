@@ -9,7 +9,7 @@ services:
       - 18080:8080
     build:
       context: .
-      dockerfile: ./_docker/images/web/Dockerfile
+      dockerfile: ./.docker/images/web/Dockerfile
       # target: gctapp-web-dev
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -21,7 +21,7 @@ services:
     container_name: gctapp-api
     build:
       context: .
-      dockerfile: ./_docker/images/api/Dockerfile
+      dockerfile: ./.docker/images/api/Dockerfile
       target: gctapp-api-dev
     ports:
       - 28080:7000

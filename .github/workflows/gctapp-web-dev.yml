@@ -13,7 +13,7 @@ on:
 env:
   PROJECT_ID: ${{ secrets.GCR_PROJECT }}
   RUN_REGION: europe-west3
-  SERVICE_NAME: gctapp-web
+  SERVICE_NAME: gctapp/web
 
 jobs:
   build:
@@ -80,7 +80,7 @@ jobs:
           gcloud builds submit \
             --quiet \
             --tag "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA"
-        working-directory: .docker
+        working-directory: .docker/images/web
 
       # Deploy image to Cloud Run
       - name: Deploy GCR

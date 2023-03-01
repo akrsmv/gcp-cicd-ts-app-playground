@@ -76,7 +76,7 @@ jobs:
 
       - name: gcr.io/kaniko-project/executor:latest
         run: |-
-          --dockerfile=.docker/images/web/Dockerfile,
+          --dockerfile=.docker/Dockerfile,
           --context=dir://.,
           --destination=gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA,
 

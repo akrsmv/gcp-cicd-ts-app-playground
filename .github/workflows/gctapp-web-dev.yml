@@ -81,7 +81,7 @@ jobs:
         #     --quiet \
         #     --tag "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA"
         run: |-
-          echo "tagging with gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA" \ 
+          echo tagging with gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA \ 
           && docker run \
           -v "$HOME"/.config/gcloud:/root/.config/gcloud \
           -v ${PWD}:/workspace \
@@ -94,7 +94,7 @@ jobs:
       # Deploy image to Cloud Run
       - name: Deploy GCR
         run: |-
-          echo "tagging with gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA" \ 
+          echo tagging with gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA \ 
           && gcloud run deploy "$SERVICE_NAME" \
             --quiet \
             --region "$RUN_REGION" \

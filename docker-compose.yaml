@@ -10,7 +10,7 @@ services:
     build:
       context: .
       dockerfile: ./_docker/images/web/Dockerfile
-      target: gctapp-web-dev
+      # target: gctapp-web-dev
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
@@ -33,7 +33,7 @@ services:
       - REDIS_CONNECTION_STRING=redis://gctapp-redis:6379
 
   redis:
-    image: redis:alpine3.17
+    image: redislabs/redistimeseries
     container_name: gctapp-redis
     ports:
       - 6379:6379

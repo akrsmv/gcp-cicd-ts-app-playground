@@ -52,8 +52,8 @@ export const generateSampleFiles = async (params: GenerateSampleData) => {
     const { prefix, tickStep } = params
 
     const dateRange: GetDataInput = {
-        start: strToYmd(params.start),
-        end: strToYmd(params.end)
+        start: strToYmd(params.start, true),
+        end: strToYmd(params.end, true)
     }
     for await (const [forDay, fileKey] of gcsKeysGenerator(dateRange, prefix)) {
         await mkdir(dirname(join(_cacheDir, fileKey)), { recursive: true })
@@ -161,9 +161,9 @@ const batchGetFiles = async (query?: GetFilesOptions): Promise<void> => {
  * ```
  */
 async function* gcsKeysGenerator(req: GetDataInput, prefix: string): AsyncGenerator<[Date, string], void, void> {
-    for (let y = req.end.year; y >= (req.start?.year ?? req.end.year); y++) {
-        for (let m = req.end.month; m <= monthRange(y, req); m++) {
-            for (let d = req.end.day; d <= dayRange(y, m, req); d++) {
+    for (let y = req.start!.year; y <= (req.end.year ?? req.start!.year); y++) {
+        for (let m = req.start!.month; m <= monthRange(y, req); m++) {
+            for (let d = req.start!.day; d <= dayRange(y, m, req); d++) {
                 yield [
                     ymdToUTCDate({ year: y, month: m, day: d }),
                     `${prefix}/${y}/${withZero(m)}/${withZero(d)}.jsonl`
@@ -188,8 +188,8 @@ const getDaysInMonth = (year: number, month: number) => {
  * @returns
  */
 const monthRange = (forYear: number, req: GetDataInput) => {
-    if (req.start && forYear === req.start.year) {
-        return req.start.month
+    if (forYear === req.end.year) {
+        return req.end.month
     }
     return 12
 }
@@ -200,8 +200,8 @@ const monthRange = (forYear: number, req: GetDataInput) => {
  * @returns
  */
 const dayRange = (forYear: number, forMonth: number, req: GetDataInput) => {
-    if (req.start && forYear === req.start.year && forMonth === req.start.month) {
-        return req.start.day
+    if (forYear === req.end.year && forMonth === req.end.month) {
+        return req.end.day
     }
     return getDaysInMonth(forYear, forMonth)
 }

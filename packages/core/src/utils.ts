@@ -33,16 +33,22 @@ export const ymdToUTCDate = (input: YearMonthDay) => {
     return new Date(`${year}-${withZero(month)}-${withZero(day)}T00:00:00.000Z`)
 }
 
-export const strToYmd = (ymdStr:string, callerStr?: string) => {
+export const strToYmd = (ymdStr:string, setDefaultStartDate: boolean = false, callerStr?: string) => {
     const matched = datePattern.exec(ymdStr)?.groups
-    if (matched) {
+    if (matched) { 
+        // BEWARE: match may be only partial
+        // If so setDefaultStartDate's value will say if error is thrown or date is returned
         return validateInputDate({
             year: matched.year,
             month: matched.month,
             day: matched.day,
             callerStr,
-            setDefaultStartDate: false
+            setDefaultStartDate
         })
+    } else if (setDefaultStartDate) {
+        // if input was not matched at all(undefined)
+        // but still a default date is requested:
+        return dateToYmd(new Date())
     }
     throw new GctError("GCTE900", GctErrorMessage.GCTE900)
 }
@@ -65,10 +71,10 @@ export const validateInputDate = (req: ValidateDateInput): YearMonthDay => {
         month = current.month
         day = current.day
     }
-    if (req.setDefaultStartDate && !month) {
+    if (req.setDefaultStartDate && year && !month) {
         month = 1
     }
-    if (req.setDefaultStartDate && !day) {
+    if (req.setDefaultStartDate && year && !day) {
         day = 1
     }
 

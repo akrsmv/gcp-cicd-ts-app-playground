@@ -42,11 +42,11 @@
     "colId": "a81bfcfe-ff0c-4b5a-8eb4-c46b2f7a01a3",
     "containerId": "31fef12b-03ea-45d6-ba8c-e7d398e6f668",
     "name": "rebuild-price-index",
-    "url": "http://localhost:7000/admin/prices/index/rebuild",
+    "url": "http://localhost:7000/admin/electricity/prices/index/rebuild",
     "method": "POST",
     "sortNum": 70000,
     "created": "2023-02-26T18:21:27.825Z",
-    "modified": "2023-02-26T18:21:33.368Z",
+    "modified": "2023-03-01T17:57:20.165Z",
     "headers": [],
     "params": [],
     "tests": []
@@ -60,14 +60,15 @@
     "method": "POST",
     "sortNum": 80000,
     "created": "2023-02-28T15:47:59.626Z",
-    "modified": "2023-02-28T17:42:36.616Z",
+    "modified": "2023-03-01T17:55:26.208Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"start\": \"2019/01/01\",\n  \"end\": \"2023/02/28\",\n  \"randValueKey\": \"price\",\n  \"prefix\": \"prices\",\n  \"randValueRange\": [100,200],\n  \"additionalProps\": {\n    \"currency\": \"BGN\"\n  },\n  \"tickStep\": 3600000\n  \n}",
+      "raw": "{\n  \"start\": \"2019/01/01\",\n  \"randValueKey\": \"price\",\n  \"prefix\": \"prices\",\n  \"randValueRange\": [100,200],\n  \"additionalProps\": {\n    \"currency\": \"BGN\"\n  },\n  \"tickStep\": 3600000\n  \n}",
       "form": []
     },
-    "tests": []
+    "tests": [],
+    "docs": "Genarates sample data from `start` to `end` or to current date if `end` is not provided"
   }
 ]

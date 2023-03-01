@@ -11,7 +11,7 @@ on:
       - 'packages/web/**/*.json'
 
 env:
-  PROJECT_ID: ${{ secrets.GCR_PROJECT }}
+  PROJECT_ID: toki-take-home-2023
   RUN_REGION: europe-west3
   SERVICE_NAME: gctapp-web
 

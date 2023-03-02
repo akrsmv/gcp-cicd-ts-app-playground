@@ -102,7 +102,8 @@ jobs:
         # run: |-
         #   ls -lRa ~/.config \ 
         #   docker run \
-        #   -e GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS \
+        #   -e GOOGLE_APPLICATION_CREDENTIALS=/kaniko/config.json \
+        #   -v $GOOGLE_APPLICATION_CREDENTIALS:/kaniko/config.json \
         #   -v ~/.config:/root/.config \
         #   -v ${PWD}:/workspace \
         #   gcr.io/kaniko-project/executor:latest \

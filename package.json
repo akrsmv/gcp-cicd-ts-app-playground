@@ -3,18 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "tsc --build --clean",
+    "build": "npm run build --w @gctapp/core && npm run build --w @gctapp/api",
     "api": "npm run dev --w @gctapp/api",
-    "web": "npm start --w @gctapp/web",
-    "artifact:api": "cd packages/core && npm install && tsc && mkdir -p ../api/node_modules/@gctapp/core/ && cp -r ./dist ../api/node_modules/@gctapp/core && cp package.json ../api/node_modules/@gctapp/core/. && cd ../api && npm install && tsc && cp -r ./dist ./build && mv node_modules ./build/.",
-    "artifact:web": "npm run build --w @gctapp/web"
+    "web": "npm start --w @gctapp/web"
   },
   "workspaces": [
     "packages/web",
-    "packages/api",
-    "packages/core"
+    "packages/core",
+    "packages/api"
   ]
 }

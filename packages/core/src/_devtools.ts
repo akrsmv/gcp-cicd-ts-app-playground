@@ -50,6 +50,8 @@ interface GenerateSampleData {
 /**
  * Generates jsonline data on local filesystem
  * @param params What sample data to generate
+ * @returns
+ * 
  */
 export const generateSampleFiles = async (params: GenerateSampleData) => {
     const { prefix, tickStep } = params

@@ -1,4 +1,4 @@
-FROM node:18.14.2-alpine3.17 as gctapp-api-dev
+FROM node:18.14.2-alpine3.17
 WORKDIR /app
 COPY . ./
 RUN npm run build:api

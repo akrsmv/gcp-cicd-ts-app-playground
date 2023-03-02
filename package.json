@@ -6,10 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "tsc --build --clean",
-    "build:api": "npm run build --w @gctapp/core && npm run build --w @gctapp/api",
-    "start:api": "npm run dev --w @gctapp/api",
-    "start:web": "npm start --w @gctapp/web",
-    "web:prodbuild": "npm run build --w @gctapp/web"
+    "api": "npm run dev --w @gctapp/api",
+    "web": "npm start --w @gctapp/web",
+    "artifact:api": "cd packages/core && npm install && tsc && mkdir -p ../api/node_modules/@gctapp/core/ && cp -r ./dist ../api/node_modules/@gctapp/core && cp package.json ../api/node_modules/@gctapp/core/. && cd ../api && npm install && tsc && cp -r ./dist ./build && mv node_modules ./build/.",
+    "artifact:web": "npm run build --w @gctapp/web"
   },
   "workspaces": [
     "packages/web",

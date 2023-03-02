@@ -52,7 +52,6 @@ interface GenerateSampleData {
  * 
  * @param params What sample data to generate
  * @returns
- * 
  */
 export const generateSampleFiles = async (params: GenerateSampleData) => {
     const { prefix, tickStep } = params

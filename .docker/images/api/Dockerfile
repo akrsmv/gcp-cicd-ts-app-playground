@@ -1,17 +1,7 @@
 FROM node:18.14.2-alpine3.17
 
-COPY . ./
-
-RUN npm install
-
-RUN npm run build -w @gctapp/core
-# COPY ./packages/core/dist ./node_modules/@gctapp/core/dist
-# COPY ./packages/core/package.json ./node_modules/@gctapp/core/package.json
-
-# RUN cd /app/packages/api && npm install && ./node_modules/.bin/tsc
-RUN npm run build -w @gctapp/api
-COPY ./packages/api/dist/ ./dist/
-# COPY ./packages/api/node_modules/ ./node_modules/
+WORKDIR /app
+COPY ./packages/api/build/ /app
 
 CMD ["node", "./dist/index"]
 

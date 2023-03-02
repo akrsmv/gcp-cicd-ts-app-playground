@@ -100,7 +100,6 @@ jobs:
           docker run \
           -e GOOGLE_APPLICATION_CREDENTIALS=/kaniko/config.json \
           -v $GOOGLE_APPLICATION_CREDENTIALS:/kaniko/config.json \
-          -v ~/.config:/root/.config \
           -v ${PWD}:/workspace \
           gcr.io/kaniko-project/executor:latest \
           --dockerfile /workspace/.docker/images/web/Dockerfile \

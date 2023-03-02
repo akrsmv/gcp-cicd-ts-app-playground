@@ -66,11 +66,11 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@main
 
-      - name: Download Artifact
-        uses: actions/download-artifact@main
-        with:
-          name: build
-          path: packages/api/build
+      # - name: Download Artifact
+      #   uses: actions/download-artifact@main
+      #   with:
+      #     name: build
+      #     path: packages/api/build
 
       - name: Setup GCloud Auth
         id: auth

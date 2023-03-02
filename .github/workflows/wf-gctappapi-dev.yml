@@ -31,26 +31,26 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: Use cached node_modules
-        uses: actions/cache@master
-        with:
-          path: node_modules
-          key: nodeModules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            nodeModules-
-      - name: Install dependencies
-        run: npm install
-        env:
-          CI: true
+      # - name: Use cached node_modules
+      #   uses: actions/cache@master
+      #   with:
+      #     path: node_modules
+      #     key: nodeModules-${{ hashFiles('**/package-lock.json') }}
+      #     restore-keys: |
+      #       nodeModules-
+      # - name: Install dependencies
+      #   run: npm install
+      #   env:
+      #     CI: true
 
-      - name: Build Development
-        run: npm run build:api
+      # - name: Build Development
+      #   run: npm run build:api
 
-      - name: Archive Production Artifact
-        uses: actions/upload-artifact@main
-        with:
-          name: build
-          path: packages/web/build
+      # - name: Archive Production Artifact
+      #   uses: actions/upload-artifact@main
+      #   with:
+      #     name: build
+      #     path: packages/web/build
 
   deploy-gcr:
     name: Deploy to GCR
@@ -61,11 +61,11 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@main
 
-      - name: Download Artifact
-        uses: actions/download-artifact@main
-        with:
-          name: build
-          path: packages/web/build
+      # - name: Download Artifact
+      #   uses: actions/download-artifact@main
+      #   with:
+      #     name: build
+      #     path: packages/web/build
 
       - name: Setup GCloud Auth
         id: auth

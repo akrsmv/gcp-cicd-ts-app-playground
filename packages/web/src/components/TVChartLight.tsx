@@ -53,7 +53,6 @@ export const TVChartLight = (props: any) => {
 
             const newSeries = chart.addAreaSeries({ lineColor, topColor: areaTopColor, bottomColor: areaBottomColor })
 
-            //@ts-ignore Ts type cnfused it cannot accept number values, while the lib is supporting it 
             newSeries.setData(data)
 
             window.addEventListener('resize', handleResize)
@@ -66,7 +65,7 @@ export const TVChartLight = (props: any) => {
         },
         [data, backgroundColor, lineColor, textColor, areaTopColor, areaBottomColor]
     )
-    // @ts-ignore
+    // eslint-disable-next-line
     const loadData = useCallback((params: LoadDataParams) => priceStore.load(params), [])
 
     return (

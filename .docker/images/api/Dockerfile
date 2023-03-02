@@ -18,6 +18,7 @@ FROM node:18.14.2-alpine3.17
 
 WORKDIR /app
 COPY --from=build /app/packages/api/build/ /app
+EXPOSE 7000
 CMD ["node", "./dist/index"]
 
 

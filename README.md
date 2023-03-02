@@ -36,7 +36,10 @@ TODOS amd milestones
     - gctapp/web (react, served with nginx)
     - gctapp/api (express)
 - CICD pipeline: Google actions + GCP Cloud Build
-
+// useful commands here:
+`docker tag gctapp/web gcr.io/toki-take-home-2023/gctapp/web`
+`gcloud auth configure-docker`
+`docker push gcr.io/toki-take-home-2023/gctapp/web`
 #--
 
 - redis + Firebase, or Tick Stack + Firebase, oor only firebase? Or just Redis Enterprise in Google.

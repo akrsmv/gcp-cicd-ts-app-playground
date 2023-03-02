@@ -66,7 +66,7 @@ export const TVChartLight = (props: any) => {
         },
         [data, backgroundColor, lineColor, textColor, areaTopColor, areaBottomColor]
     )
-
+    // @ts-ignore
     const loadData = useCallback((params: LoadDataParams) => priceStore.load(params), [])
 
     return (

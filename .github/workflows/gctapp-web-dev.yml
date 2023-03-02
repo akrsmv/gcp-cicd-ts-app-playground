@@ -91,7 +91,7 @@ jobs:
         # working-directory: .
 
         run: |-
-          ls -lRa ~/.config/gcloud/ \ 
+          ls -lRa ~/.config \ 
           docker run \
           -v ~/.config:/root/.config \
           -v ${PWD}:/workspace \

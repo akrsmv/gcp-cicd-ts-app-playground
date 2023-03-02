@@ -6,12 +6,12 @@ WORKDIR /app
 
 RUN npm install
 
-RUN npm run build:api
-# COPY /app/packages/core/dist /app/node_modules/@gctapp/core/dist
-# COPY /app/packages/core/package.json /app/node_modules/@gctapp/core/package.json
+RUN npm run build -w @gctapp/core
+COPY /app/packages/core/dist /app/node_modules/@gctapp/core/dist
+COPY /app/packages/core/package.json /app/node_modules/@gctapp/core/package.json
 
 # RUN cd /app/packages/api && npm install && ./node_modules/.bin/tsc
-
+RUN npm run build -w @gctapp/api
 COPY /app/packages/api/dist/ /app/dist/
 COPY /app/packages/api/node_modules/ /app/node_modules/
 

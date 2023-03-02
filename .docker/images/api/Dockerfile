@@ -4,11 +4,14 @@ COPY . /app
 
 WORKDIR /app
 
-RUN cd /app/packages/core && npm install && ./node_modules/.bin/tsc
-COPY /app/packages/core/dist /app/node_modules/@gctapp/core/dist
-COPY /app/packages/core/package.json /app/node_modules/@gctapp/core/package.json
+RUN npm install
 
-RUN cd /app/packages/api && npm install && ./node_modules/.bin/tsc
+RUN npm run build:api
+# COPY /app/packages/core/dist /app/node_modules/@gctapp/core/dist
+# COPY /app/packages/core/package.json /app/node_modules/@gctapp/core/package.json
+
+# RUN cd /app/packages/api && npm install && ./node_modules/.bin/tsc
+
 COPY /app/packages/api/dist/ /app/dist/
 COPY /app/packages/api/node_modules/ /app/node_modules/
 

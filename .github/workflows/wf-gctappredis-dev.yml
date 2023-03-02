@@ -6,6 +6,7 @@ on:
       - dev
     paths:
       - '.docker/images/redis/**/*'
+      - '.github/workflows/wf-gctappredis-dev.yml'
 
 env:
   PROJECT_ID: toki-take-home-2023
@@ -122,6 +123,7 @@ jobs:
           gcloud run deploy "$SERVICE_NAME" \
             --quiet \
             --ingress=internal \
+            --max-instances=4 \
             --region "$RUN_REGION" \
             --image "gcr.io/$PROJECT_ID/$IMAGE_NAME:$GITHUB_SHA" \
             --platform "managed" \

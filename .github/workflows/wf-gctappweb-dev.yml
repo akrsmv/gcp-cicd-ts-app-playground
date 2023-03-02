@@ -89,6 +89,12 @@ jobs:
             --config ".github/cb-gctappweb-dev.yaml"
             --substitutions="_PROJECT_ID=$PROJECT_ID,_IMAGE_NAME=$IMAGE_NAME,_SERVICE_NAME=$SERVICE_NAME,_GITHUB_SHA=$GITHUB_SHA"
         working-directory: .
+        env:
+          PROJECT_ID: toki-take-home-2023
+          RUN_REGION: europe-west3
+          IMAGE_NAME: gctapp/web
+          SERVICE_NAME: gctapp-web
+
 
         # seems kaniko only supports passing -e GOOGLE_APPLICATION_CREDENTIALS=/kaniko/config.json 
         # i.e wants the key json dumped on the build agent first and then passing it

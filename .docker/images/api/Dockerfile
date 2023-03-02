@@ -1,6 +1,7 @@
 FROM node:18.14.2-alpine3.17
 WORKDIR /app
 COPY . ./
+RUN npm install
 RUN npm run build:api
 COPY ./packages/api/dist/ /app/dist/
 COPY ./node_modules/ /app/node_modules/

@@ -22,7 +22,7 @@ services:
     build:
       context: .
       dockerfile: ./.docker/images/api/Dockerfile
-      target: gctapp-api-dev
+      # target: gctapp-api-dev
     ports:
       - 28080:7000
     extra_hosts:

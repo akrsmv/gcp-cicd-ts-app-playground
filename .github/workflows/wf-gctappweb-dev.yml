@@ -83,23 +83,26 @@ jobs:
 
       # Build and push image to Google Container Registry
       - name: Build & Push
-        # run: |-
-        #   gcloud builds submit \
-        #     --quiet \
-        #     --tag "gcr.io/$PROJECT_ID/$IMAGE_NAME:$GITHUB_SHA" \
-        #     --dir "packages/web"
-        # working-directory: .
-
         run: |-
-          ls -lRa ~/.config \ 
-          docker run \
-          -v ~/.config:/root/.config \
-          -v ${PWD}:/workspace \
-          gcr.io/kaniko-project/executor:latest \
-          --dockerfile /workspace/.docker/images/web/Dockerfile \
-          --destination "gcr.io/$PROJECT_ID/$IMAGE_NAME:$GITHUB_SHA" \
-          --context dir:///workspace/
+          gcloud builds submit \
+            --quiet \
+            --tag "gcr.io/$PROJECT_ID/$IMAGE_NAME:$GITHUB_SHA" \
+            --config ".github/workflows/cb-gctappweb-dev.yaml"
         working-directory: .
+
+        # seems kaniko only supports passing -e GOOGLE_APPLICATION_CREDENTIALS=/kaniko/config.json 
+        # i.e wants the key json dumped on the build agent first and then passing it
+        # not good idea to dump the key, need to find other way
+        # run: |-
+        #   ls -lRa ~/.config \ 
+        #   docker run \
+        #   -v ~/.config:/root/.config \
+        #   -v ${PWD}:/workspace \
+        #   gcr.io/kaniko-project/executor:latest \
+        #   --dockerfile /workspace/.docker/images/web/Dockerfile \
+        #   --destination "gcr.io/$PROJECT_ID/$IMAGE_NAME:$GITHUB_SHA" \
+        #   --context dir:///workspace/
+        # working-directory: .
         
 
       # Deploy image to Cloud Run

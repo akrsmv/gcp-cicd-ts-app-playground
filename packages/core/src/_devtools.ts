@@ -47,7 +47,10 @@ interface GenerateSampleData {
     additionalProps?: Record<string, number | string>
     tickStep: number
 }
-
+/**
+ * Generates jsonline data on local filesystem
+ * @param params 
+ */
 export const generateSampleFiles = async (params: GenerateSampleData) => {
     const { prefix, tickStep } = params
 

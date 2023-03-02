@@ -73,7 +73,7 @@ jobs:
           credentials_json: ${{ secrets.GCR_SA_KEY }}
 
       - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0.2.1
+        uses: google-github-actions/    -gcloud@v0.2.1
 
       # - name: gcr.io/kaniko-project/executor:latest
       #   run: |-
@@ -93,13 +93,14 @@ jobs:
         run: |-
           echo tagging with gcr.io/$PROJECT_ID/$IMAGE_NAME:$GITHUB_SHA \ 
           docker run \
-          -v "$HOME"/.config/gcloud:/root/.config/gcloud \
+          -v ~/.config:/root/.config \
           -v ${PWD}:/workspace \
           gcr.io/kaniko-project/executor:latest \
           --dockerfile /workspace/.docker/images/web/Dockerfile \
           --destination "gcr.io/$PROJECT_ID/$IMAGE_NAME:$GITHUB_SHA" \
           --context dir:///workspace/
         working-directory: .
+        
 
       # Deploy image to Cloud Run
       - name: Deploy GCR

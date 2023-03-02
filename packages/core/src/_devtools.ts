@@ -25,7 +25,6 @@ export const _loadFilesFromLocalMachine = async (): Promise<[Buffer][]> => {
 /**
  * Looks for cached query results in local cache 
  * Returns JSON data if cache found, otherwise undefined
- * 
  * @param path 
  */
 const loadJsonFiles = async (startDir: string) => {

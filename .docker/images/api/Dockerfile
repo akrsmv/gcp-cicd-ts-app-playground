@@ -1,6 +1,8 @@
 FROM node:18.14.2-alpine3.17
+
+COPY . /app
+
 WORKDIR /app
-COPY . ./
 
 RUN cd /app/packages/core && npm install && npm run build
 COPY /app/packages/core/dist /app/node_modules/@gctapp/core/dist

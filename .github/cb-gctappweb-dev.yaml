@@ -17,10 +17,10 @@ steps:
 # Docker Build
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-f', '.docker/images/web', -t', 
-           'gcr.io/$PROJECT_ID/$IMAGE_NAME:$GITHUB_SHA', 
+           'gcr.io/${_PROJECT_ID}/${_IMAGE_NAME}:$GITHUB_SHA', 
            '.']
 
 # Docker Push
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 
-           'gcr.io/$PROJECT_ID/$IMAGE_NAME:$GITHUB_SHA']
+           'gcr.io/${_PROJECT_ID}/${_IMAGE_NAME}:$GITHUB_SHA']

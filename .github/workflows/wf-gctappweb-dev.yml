@@ -64,7 +64,7 @@ jobs:
         uses: actions/download-artifact@main
         with:
           name: build
-          path: .docker/packages/web/build
+          path: packages/web/build
 
       - name: Setup GCloud Auth
         id: auth

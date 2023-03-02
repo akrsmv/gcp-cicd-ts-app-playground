@@ -67,7 +67,7 @@ export const TVChartLight = (props: any) => {
         [data, backgroundColor, lineColor, textColor, areaTopColor, areaBottomColor]
     )
 
-    const loadData = useCallback(priceStore.load,[])
+    const loadData = useCallback((params: LoadDataParams) => usePriceStore().load(params), [])
 
     return (
         <div ref={chartContainerRef}>

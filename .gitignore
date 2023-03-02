@@ -3,4 +3,5 @@ node_modules
 dist
 localdev_files
 build
+.tsbuildinfo
 

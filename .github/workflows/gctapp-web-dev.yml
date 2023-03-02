@@ -49,7 +49,7 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: build
-          path: .docker/images/web/build
+          path: packages/web/build
 
   deploy-gcr:
     name: Deploy to GCR
@@ -64,7 +64,7 @@ jobs:
         uses: actions/download-artifact@main
         with:
           name: build
-          path: packages/web/.docker/build
+          path: .docker/packages/web/build
 
       - name: Setup GCloud Auth
         id: auth

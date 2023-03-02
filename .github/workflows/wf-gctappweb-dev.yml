@@ -96,7 +96,6 @@ jobs:
         # i.e wants the key json dumped on the build agent first and then passing it
         # not good idea to dump the key, need to find other way
         run: |-
-          ls -lRa ~/.config \ 
           docker run \
           -e GOOGLE_APPLICATION_CREDENTIALS=/kaniko/config.json \
           -v $GOOGLE_APPLICATION_CREDENTIALS:/kaniko/config.json \

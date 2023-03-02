@@ -2,10 +2,10 @@ FROM node:18.14.2-alpine3.17
 WORKDIR /app
 COPY . ./
 RUN npm run build:api
-COPY --from=build /app/packages/api/dist/ /app/dist/
-COPY --from=build /app/node_modules/ /app/node_modules/
-COPY --from=build /app/packages/core/dist /app/node_modules/@gctapp/core/dist
-COPY --from=build /app/packages/core/package.json /app/node_modules/@gctapp/core/package.json
+COPY ./packages/api/dist/ /app/dist/
+COPY ./node_modules/ /app/node_modules/
+COPY ./packages/core/dist /app/node_modules/@gctapp/core/dist
+COPY ./packages/core/package.json /app/node_modules/@gctapp/core/package.json
 CMD ["node", "./dist/index"]
 
 

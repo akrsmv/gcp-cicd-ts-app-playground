@@ -6,9 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "tsc --build --clean",
-    "build": "npm run build --w @gctapp/core && npm run build --w @gctapp/api",
-    "api": "npm run dev --w @gctapp/api",
-    "web": "npm start --w @gctapp/web",
+    "build:api": "npm run build --w @gctapp/core && npm run build --w @gctapp/api",
+    "start:api": "npm run dev --w @gctapp/api",
+    "start:web": "npm start --w @gctapp/web",
     "web:prodbuild": "npm run build --w @gctapp/web"
   },
   "workspaces": [

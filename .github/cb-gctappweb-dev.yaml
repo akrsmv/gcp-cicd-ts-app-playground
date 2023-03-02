@@ -19,7 +19,7 @@ substitutions:
   _IMAGE_NAME: gctapp/web
   _PROJECT_ID: toki-take-home-2023
   # requires string, not float
-  _GIT_SHA: version-1  # updating this may not bust the cache because we --cache-from multiple tags, you'd need to comment out the --cache-from or use --no-cache for a proper cache bust behaviour
+  _GITHUB_SHA: version-1  # updating this may not bust the cache because we --cache-from multiple tags, you'd need to comment out the --cache-from or use --no-cache for a proper cache bust behaviour
 
 steps:
 

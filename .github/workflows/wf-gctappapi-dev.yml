@@ -39,7 +39,7 @@ jobs:
           restore-keys: |
             nodeModules-
       - name: Install dependencies
-        run: npm install
+        run: npm install && npm install -g typescript
         env:
           CI: true
 

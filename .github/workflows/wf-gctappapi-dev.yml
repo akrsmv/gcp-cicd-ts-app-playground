@@ -18,48 +18,48 @@ env:
   SERVICE_NAME: gctapp-api
 
 jobs:
-  build:
-    name: Build Gct Api
-    runs-on: ubuntu-latest
+  # build:
+  #   name: Build Gct Api
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@main
+  #   steps:
+  #     - name: Checkout Repo
+  #       uses: actions/checkout@main
 
-      - name: Setup Node.js (NPM)
-        uses: actions/setup-node@master
-        with:
-          node-version: '18.x'
+  #     - name: Setup Node.js (NPM)
+  #       uses: actions/setup-node@master
+  #       with:
+  #         node-version: '18.x'
 
-      - name: Use cached node_modules
-        uses: actions/cache@master
-        with:
-          path: node_modules
-          key: nodeModules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            nodeModules-
-      - name: Install dependencies
-        run: npm install -w @gctapp/api && npm install -g typescript
-        env:
-          CI: true
+  #     - name: Use cached node_modules
+  #       uses: actions/cache@master
+  #       with:
+  #         path: node_modules
+  #         key: nodeModules-${{ hashFiles('**/package-lock.json') }}
+  #         restore-keys: |
+  #           nodeModules-
+  #     - name: Install dependencies
+  #       run: npm install -w @gctapp/api && npm install -g typescript
+  #       env:
+  #         CI: true
 
-      - name: Build Development
-        run: |-
-          tsc --build packages/core packages/api/ --verbose \
-          && mkdir packages/api/build \
-          && cp -r --preserve=links node_modules packages/api/dist packages/api/build/ \
-          && rm -fr packages/api/build/node_modules/@gctapp/* \
-          && cp -r -L node_modules/@gctapp/core packages/api/build/node_modules/@gctapp/
+  #     - name: Build Development
+  #       run: |-
+  #         tsc --build packages/core packages/api/ --verbose \
+  #         && mkdir packages/api/build \
+  #         && cp -r --preserve=links node_modules packages/api/dist packages/api/build/ \
+  #         && rm -fr packages/api/build/node_modules/@gctapp/* \
+  #         && cp -r -L node_modules/@gctapp/core packages/api/build/node_modules/@gctapp/
 
-      - name: Archive Production Artifact
-        uses: actions/upload-artifact@main
-        with:
-          name: build
-          path: packages/api/build
+  #     - name: Archive Production Artifact
+  #       uses: actions/upload-artifact@main
+  #       with:
+  #         name: build
+  #         path: packages/api/build
 
   deploy-gcr:
     name: Deploy to GCR
-    needs: build
+    # needs: build
     runs-on: ubuntu-latest
 
     steps:

@@ -1,9 +1,23 @@
+FROM node:18.14.2-alpine3.17 as build
+
+WORKDIR /app
+COPY . ./
+RUN npm install -w @gctapp/api && npm install -g typescript
+RUN tsc --build packages/core packages/api/ --verbose \
+          && mkdir packages/api/build \
+          && cp -r --preserve=links node_modules packages/api/dist packages/api/build/ \
+          && rm -fr packages/api/build/node_modules/@gctapp/* \
+          && cp -r -L node_modules/@gctapp/core packages/api/build/node_modules/@gctapp/
+
+
 FROM node:18.14.2-alpine3.17
 
 WORKDIR /app
-COPY ./packages/api/build/ /app
-
+COPY --from=build /app/packages/api/build/ /app
 CMD ["node", "./dist/index"]
+
+
+
 
 
 # FROM node:18.14.2-alpine3.17 as build

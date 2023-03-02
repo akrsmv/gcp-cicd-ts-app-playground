@@ -15,59 +15,14 @@ env:
   SERVICE_NAME: gctapp-redis
 
 jobs:
-  # build:
-  #   name: Build Gct Api
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #     - name: Checkout Repo
-  #       uses: actions/checkout@main
-
-  #     - name: Setup Node.js (NPM)
-  #       uses: actions/setup-node@master
-  #       with:
-  #         node-version: '18.x'
-
-  #     - name: Use cached node_modules
-  #       uses: actions/cache@master
-  #       with:
-  #         path: node_modules
-  #         key: nodeModules-${{ hashFiles('**/package-lock.json') }}
-  #         restore-keys: |
-  #           nodeModules-
-  #     - name: Install dependencies
-  #       run: npm install -w @gctapp/api && npm install -g typescript
-  #       env:
-  #         CI: true
-
-  #     - name: Build Development
-  #       run: |-
-  #         tsc --build packages/core packages/api/ --verbose \
-  #         && mkdir packages/api/build \
-  #         && cp -r --preserve=links node_modules packages/api/dist packages/api/build/ \
-  #         && rm -fr packages/api/build/node_modules/@gctapp/* \
-  #         && cp -r -L node_modules/@gctapp/core packages/api/build/node_modules/@gctapp/
-
-  #     - name: Archive Production Artifact
-  #       uses: actions/upload-artifact@main
-  #       with:
-  #         name: build
-  #         path: packages/api/build
-
+  
   deploy-gcr:
     name: Deploy to GCR
-    # needs: build
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repo
         uses: actions/checkout@main
-
-      # - name: Download Artifact
-      #   uses: actions/download-artifact@main
-      #   with:
-      #     name: build
-      #     path: packages/api/build
 
       - name: Setup GCloud Auth
         id: auth
@@ -78,21 +33,7 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.2.1
 
-      # Build and push image to Google Container Registry
       - name: Build & Push
-      
-      #using gcloud cli directly
-      #   run: |-
-      #     gcloud builds submit \
-      #       --quiet \
-      #       --config ".github/cb-gctappweb-dev.yaml"
-      #       --substitutions="_PROJECT_ID=$PROJECT_ID,_IMAGE_NAME=$IMAGE_NAME,_SERVICE_NAME=$SERVICE_NAME,_GITHUB_SHA=$GITHUB_SHA"
-      #   working-directory: .
-      #   env:
-      #     PROJECT_ID: toki-take-home-2023
-      #     RUN_REGION: europe-west3
-      #     IMAGE_NAME: gctapp/web
-      #     SERVICE_NAME: gctapp-web
 
       #using kaniko
         # since not using gcloudd cli here, kaniko needs credentials 
@@ -123,7 +64,7 @@ jobs:
           gcloud run deploy "$SERVICE_NAME" \
             --quiet \
             --ingress=internal \
-            --max-instances=4 \
+            --max-instances=1 \
             --region "$RUN_REGION" \
             --image "gcr.io/$PROJECT_ID/$IMAGE_NAME:$GITHUB_SHA" \
             --platform "managed" \

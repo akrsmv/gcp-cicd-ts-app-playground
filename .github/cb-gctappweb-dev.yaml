@@ -13,16 +13,15 @@
 # limitations under the License.
 
 # [START cloudbuild_basic_config]
+
+substitutions:
+  # XXX: set image and tag
+  _IMAGE_NAME: gctapp/web
+  _PROJECT_ID: toki-take-home-2023
+  # requires string, not float
+  _GIT_SHA: version-1  # updating this may not bust the cache because we --cache-from multiple tags, you'd need to comment out the --cache-from or use --no-cache for a proper cache bust behaviour
+
 steps:
-# Uses the ubuntu build step:
-# to run a shell script; and
-# set env variables for its execution
-- name: 'ubuntu'
-  args: ['bash', './myscript.sh']
-  env:
-  - '_PROJECT_ID=$_PROJECT_ID'
-  - '_IMAGE_NAME=$_IMAGE_NAME'
-  - '_GITHUB_SHA=$_GITHUB_SHA'
 
 # Docker Build
   - name: 'gcr.io/cloud-builders/docker'

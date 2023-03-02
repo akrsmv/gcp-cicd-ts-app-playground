@@ -44,7 +44,12 @@ jobs:
           CI: true
 
       - name: Build Development
-        run: tsc --build --verbose && mkdir packages/api/build && cp -rL node_modules packages/api/dist packages/api/build/  
+        run: |-
+          tsc --build --verbose \
+          && mkdir packages/api/build \
+          && cp -r --preserve=links node_modules packages/api/dist packages/api/build/ \
+          && rm -fr packages/api/build/node_modules/@gctapp/* \
+          && cp -r -L node_modules/@gctapp/core packages/api/build/node_modules/@gctapp/
 
       - name: Archive Production Artifact
         uses: actions/upload-artifact@main

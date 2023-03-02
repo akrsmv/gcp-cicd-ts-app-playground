@@ -44,7 +44,7 @@ jobs:
           CI: true
 
       - name: Build Development
-        run: tsc --build --verbose && mkdir packages/api/build cp -L packages/api/node_modules packages/api/dist packages/api/build/  
+        run: tsc --build --verbose && mkdir packages/api/build && cp -rL node_modules packages/api/dist packages/api/build/  
 
       - name: Archive Production Artifact
         uses: actions/upload-artifact@main

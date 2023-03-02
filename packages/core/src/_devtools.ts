@@ -49,7 +49,6 @@ interface GenerateSampleData {
 }
 /**
  * Generates jsonlines on local filesystem
- * 
  * @param params What sample data to generate
  * @returns
  */

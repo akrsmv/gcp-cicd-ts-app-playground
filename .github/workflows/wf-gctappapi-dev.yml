@@ -16,6 +16,7 @@ env:
   RUN_REGION: europe-west3
   IMAGE_NAME: gctapp/api
   SERVICE_NAME: gctapp-api
+  PORT: 7000
 
 jobs:
   # build:

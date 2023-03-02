@@ -13,6 +13,7 @@ env:
   RUN_REGION: europe-west3
   IMAGE_NAME: gctapp/redis
   SERVICE_NAME: gctapp-redis
+  PORT: 6379
 
 jobs:
   

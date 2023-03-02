@@ -9,6 +9,7 @@ on:
       - 'packages/web/**/*.ts'
       - 'packages/web/**/*.tsx'
       - 'packages/web/**/*.json'
+      - '.github/workflows/wf-gctappweb-dev.yml'
 
 env:
   PROJECT_ID: toki-take-home-2023
@@ -43,7 +44,7 @@ jobs:
           CI: true
 
       - name: Build Development
-        run: npm run artifact:web
+        run: npm run build -w @gctapp/web
 
       - name: Archive Production Artifact
         uses: actions/upload-artifact@main

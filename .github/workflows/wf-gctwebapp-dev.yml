@@ -1,4 +1,4 @@
-name: DEPLOY WEB + API SINGLE CONTNAINER
+name: WEB + API SINGLE CONTNAINER
 # https://github.com/google-github-actions/setup-gcloud
 on:
   push:
@@ -71,5 +71,4 @@ jobs:
             --platform "managed" \
             --set-env-vars REDIS_CONNECTION_STRING=redis://10.59.94.216:6379,GCT_ENV=DEV \
             --max-instances=4 \
-            --concurrency= 10 \
             --allow-unauthenticated

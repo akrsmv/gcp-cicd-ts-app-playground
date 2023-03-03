@@ -5,11 +5,12 @@
 
 import { Bucket, Storage } from "@google-cloud/storage"
 import { RedisClientType, createClient } from "redis"
-import { logerror, logwarn } from "./log"
+import { logerror } from "./log"
 
 let _memoryStoreClient: RedisClientType,
     _gcsStorage: Storage,
-    _gcsBucket: Bucket
+    _gcsBucket: Bucket,
+    _redisConnectionErrorsCount = 0
 
 /**
  * BEWARE this SYNC getter should always return non-undefined instance
@@ -46,7 +47,14 @@ export const initMemoryStoreClient = async () => {
     if (!_memoryStoreClient) {
         _memoryStoreClient = createClient({ url: process.env.REDIS_CONNECTION_STRING ?? `redis://127.0.0.1:6379` })
         _memoryStoreClient.on('error', async (err) => {
-            logerror('Redis Client Error. Attempting reconnect...', err)
+            if (_redisConnectionErrorsCount > 10) {
+                logerror('Could not connect to redis after ' + _redisConnectionErrorsCount, err)
+                logerror('Exitting')
+                process.exit(1)
+            }
+            _redisConnectionErrorsCount++
+            logerror('Redis Client Error. Attempting reconnect: ' + _redisConnectionErrorsCount, err)
+            await new Promise(resolve => setTimeout(resolve, 5000));
         })
         await _memoryStoreClient.connect()
     }

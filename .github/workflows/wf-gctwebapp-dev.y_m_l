@@ -1,3 +1,5 @@
+## SINGLE CONTAINER FOR TEST PURPOSES
+
 name: WEB + API SINGLE CONTNAINER
 # https://github.com/google-github-actions/setup-gcloud
 on:
@@ -72,5 +74,5 @@ jobs:
             --region $RUN_REGION \
             --vpc-connector gctapp-ew3 \
             --allow-unauthenticated \
-            --set-env-vars "REDIS_CONNECTION_STRING=redis://10.59.94.216:6379,GCT_ENV=DEV" \
+            --set-env-vars "REDIS_CONNECTION_STRING=redis://10.67.159.147:6379,GCT_ENV=DEV" \
             --port=$PORT

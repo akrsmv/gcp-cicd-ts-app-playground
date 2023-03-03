@@ -133,4 +133,6 @@ jobs:
             --vpc-connector gctapp-ew3 \
             --allow-unauthenticated \
             --set-env-vars "REDIS_CONNECTION_STRING=redis://10.67.159.147:6379,GCT_ENV=DEV" \
+            --set-secrets=REDIS_PWD=secret-redis-cloud-db-pwd:1 \
             --port=$PORT
+            

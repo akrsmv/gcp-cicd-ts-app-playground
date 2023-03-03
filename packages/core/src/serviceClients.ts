@@ -45,7 +45,10 @@ export const getGcsBucket = (): Bucket => {
 
 export const initMemoryStoreClient = async () => {
     if (!_memoryStoreClient) {
-        _memoryStoreClient = createClient({ url: process.env.REDIS_CONNECTION_STRING ?? `redis://127.0.0.1:6379` })
+        _memoryStoreClient = createClient({ 
+            url: process.env.REDIS_CONNECTION_STRING ?? `redis://127.0.0.1:6379`,
+            password: process.env.REDIS_PWD
+        })
         _memoryStoreClient.on('error', async (err) => {
             if (_redisConnectionErrorsCount > 10) {
                 logerror(` ${_redisConnectionErrorsCount} times unable to connect to ${process.env.REDIS_CONNECTION_STRING ?? `redis://127.0.0.1:6379`}...`, err)

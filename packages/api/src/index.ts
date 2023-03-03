@@ -39,7 +39,7 @@ app.get('/electricity/prices/:year?/:month?/:day?', async (req, res, next) => {
 })
 
 app.post('/admin/electricity/prices/index/rebuild', async (req, res, next) => {
-    const prices = await rebuildIndex('prices')
+    const prices = await rebuildIndex('prices', !!req.query.useLocalfs)
     res.send(prices)
 })
 

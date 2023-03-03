@@ -14,7 +14,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
-      - ENV=LOCALDEV
+      - GCT_ENV=LOCALDEV
 
   api:
     image: gctapp/api
@@ -28,7 +28,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
-      - ENV=LOCALDEV
+      - GCT_ENV=LOCALDEV
       - PORT=7000
       - REDIS_CONNECTION_STRING=redis://gctapp-redis:6379
 
@@ -51,6 +51,6 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
-      - ENV=LOCALDEV
+      - GCT_ENV=LOCALDEV
       - PORT=8080
       - REDIS_CONNECTION_STRING=redis://gctapp-redis:6379

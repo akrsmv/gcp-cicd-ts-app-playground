@@ -26,7 +26,7 @@ export const getMemoryStoreClient = () => {
 }
 export const getGcsStorage = (): Storage => {
     if (!_gcsStorage) {
-        _gcsStorage = process.env.ENV === "LOCALDEV" ? new Storage(
+        _gcsStorage = process.env.GCT_ENV === "LOCALDEV" ? new Storage(
             {
                 projectId: 'toki-take-home-2023',
                 keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS
@@ -48,7 +48,7 @@ export const initMemoryStoreClient = async () => {
         _memoryStoreClient = createClient({ url: process.env.REDIS_CONNECTION_STRING ?? `redis://127.0.0.1:6379` })
         _memoryStoreClient.on('error', async (err) => {
             if (_redisConnectionErrorsCount > 10) {
-                logerror('Could not connect to redis after ' + _redisConnectionErrorsCount, err)
+                logerror(` ${_redisConnectionErrorsCount} times unable to connect to ${process.env.REDIS_CONNECTION_STRING ?? `redis://127.0.0.1:6379`}...`, err)
                 logerror('Exitting')
                 process.exit(1)
             }

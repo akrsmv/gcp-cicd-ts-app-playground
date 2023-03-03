@@ -72,10 +72,10 @@ export const getPrices = async (params: GetDataRequest) => {
  *  
  * @param index name of redis stream key
  */
-export const rebuildIndex = async (index: string): Promise<void> => {
+export const rebuildIndex = async (index: string, useLocalfs?: boolean): Promise<void> => {
 
     let files: void | DownloadResponse[]
-    if (process.env.ENV === "LOCALDEV" && process.env.LOCAL_GCS_BUCKET === "1") {
+    if (useLocalfs) {
         // simulate download from GCS
         files = await _loadFilesFromLocalMachine() as unknown as DownloadResponse[]
     } else {

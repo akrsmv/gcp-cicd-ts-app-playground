@@ -4,5 +4,8 @@
     },
     "DEV": {
         "gct_api": "https://gctapp-api-ehlgqdbr7q-ey.a.run.app"
+    },
+    "TEST": {
+        "gct_api": "https://dir.bg"
     }
 }

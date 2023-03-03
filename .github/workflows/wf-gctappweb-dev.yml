@@ -114,6 +114,7 @@ jobs:
           --dockerfile /workspace/.docker/images/web/Dockerfile \
           --destination "gcr.io/$PROJECT_ID/$IMAGE_NAME:$GITHUB_SHA" \
           --context dir:///workspace/
+          --build-arg=REACT_APP_GCT_ENV=DEV
         working-directory: .
         
       # Deploy image to Cloud Run

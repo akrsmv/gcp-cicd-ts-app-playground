@@ -1,8 +1,13 @@
 FROM node:18.14.2-alpine3.17 as build
 WORKDIR /app
+ARG REACT_APP_GCT_ENV
+ENV REACT_APP_GCT_ENV=$REACT_APP_GCT_ENV
 COPY . ./
-# building outside of docker for now, how github action cache the node_modules if in docker?
-# RUN npm run web:prodbuild
+# WEB
+#install only packages needed for web
+RUN npm install -w @gctapp/web && npm install -g typescript 
+## react prod build
+RUN npm run build -w @gctapp/web
 
 # Local development image containing configuration for localhost API url
 FROM fholzer/nginx-brotli:v1.12.2

@@ -1,6 +1,0 @@
-{
-    "current": "LOCALDEV",
-    "INFO1": "This file exposes default local development environment",
-    "INFO2": "This file gets overriden by deployment procedures on other environments",
-    "INFO3": "INFO properties are not used in code"
-}

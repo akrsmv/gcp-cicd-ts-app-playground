@@ -101,10 +101,16 @@ function* generateOneDaySampleData(forDay: Date, params: GenerateSampleData): Ge
  * @param path Starting directory path
  */
 export async function* dirFilesGenerator(path: string): AsyncGenerator<string, void, void> {
+    const MAX_FILES_ALLOWED = 365*5+1 // (+1 for the leap year)
+    let _counter = 0
     const dirIterator = await opendir(path)
     for await (const dirent of dirIterator) {
         if (dirent.isDirectory()) {
-            yield* dirFilesGenerator(join(path, dirent.name))
+            _counter ++
+            if (_counter > MAX_FILES_ALLOWED) {
+                return
+            }  
+            yield* dirFilesGenerator(join(path, dirent.name))          
         } else {
             yield join(path, dirent.name)
         }

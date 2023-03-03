@@ -56,6 +56,6 @@ export const initMemoryStoreClient = async () => {
             logerror('Redis Client Error. Attempting reconnect: ' + _redisConnectionErrorsCount, err)
             await new Promise(resolve => setTimeout(resolve, 5000));
         })
-        // await _memoryStoreClient.connect()
+        await _memoryStoreClient.connect()
     }
 }

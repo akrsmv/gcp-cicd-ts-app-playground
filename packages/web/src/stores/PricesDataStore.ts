@@ -12,7 +12,7 @@ export interface PriceDataState {
 
 const newData = async (params: LoadDataParams) => {
     const { count, type } = params
-    const res = await fetch(`http://localhost:28080/electricity/prices?${type}=${count}`)
+    const res = await fetch(`http://localhost:8080/electricity/prices?${type}=${count}`)
     return await res.json()
 }
 

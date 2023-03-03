@@ -11,11 +11,13 @@ let _memoryStoreClient: RedisClientType,
     _gcsStorage: Storage,
     _gcsBucket: Bucket
 
+/**
+ * BEWARE this SYNC getter should always return non-undefined instance
+ * if library was used according to @see initServiceClients docs
+ **/
 export const getMemoryStoreClient = () => {
     if (_memoryStoreClient) {
-        // BEWARE (since we want to keep this getter SYNC)
-        // _memoryStoreClient should not be undefined at this point
-        // this is here only to defend from client libs 
+        // this is here to defend from client libs 
         // which do not properly call initServiceClients in their initialization
         initMemoryStoreClient()
     }

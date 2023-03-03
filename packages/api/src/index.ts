@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { generateSampleFiles, getPrices, initServiceClients, rebuildIndex } from '@gctapp/core'
 import { handleGctErrors } from './errorHandling';
 import cors from 'cors';
+import path from 'path';
 
 dotenv.config();
 
@@ -17,6 +18,14 @@ app.use(express.text())
 app.use(cors({
     origin: '*'
 }))
+
+// express on its own has no notion
+// of a "file". The express.static()
+// middleware checks for a file matching
+// the `req.path` within the directory
+// that you pass it. In this case "GET /js/app.js"
+// will look for "./public/js/app.js".
+app.use(express.static(path.join(__dirname, 'public')))
 
 app.get('/electricity/prices/:year?/:month?/:day?', async (req, res, next) => {
     const prices = await getPrices({

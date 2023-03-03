@@ -1,0 +1,81 @@
+name: DEPLOY WEB + API SINGLE CONTNAINER
+# https://github.com/google-github-actions/setup-gcloud
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - 'packages/web/**/*.ts'
+      - 'packages/web/**/*.tsx'
+      - 'packages/web/**/*.json'
+      - 'packages/api/**/*.ts'
+      - 'packages/api/**/*.json'
+      - 'packages/core/**/*.ts'
+      - 'packages/core/**/*.json'
+      - '.docker/images/gctwebapp/**/*'
+      - '.github/workflows/wf-gctwebapp-dev.yml'
+
+env:
+  PROJECT_ID: toki-take-home-2023
+  RUN_REGION: europe-west3
+  IMAGE_NAME: gctapp/all
+  SERVICE_NAME: gctapp-all
+
+jobs:
+  deploy-gcr:
+    name: Kaniko build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@main
+
+      - name: Download Artifact
+        uses: actions/download-artifact@main
+        with:
+          name: build
+          path: packages/web/build
+
+      - name: Setup GCloud Auth
+        id: auth
+        uses: google-github-actions/auth@v0.4.0
+        with:
+          credentials_json: ${{ secrets.GCR_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0.2.1
+
+      # Build and push image to Google Container Registry
+        # TODO SETUP KANIKO CACHE https://cloud.google.com/build/docs/optimize-builds/kaniko-cache
+        
+        # since not using gcloudd cli here, kaniko needs credentials 
+        #
+        # 1) passing -e GOOGLE_APPLICATION_CREDENTIALS=/kaniko/config.json
+        # 2) and also mounting the credentials into this path /kaniko/config.json
+
+        # We could omit 1) and only mount credentials into this path, since it is the default
+        # For clarity we do both 1) and 2)
+      - name: Build & Push
+        run: |-
+          docker run \
+          -e GOOGLE_APPLICATION_CREDENTIALS=/kaniko/config.json \
+          -v $GOOGLE_APPLICATION_CREDENTIALS:/kaniko/config.json \
+          -v ${PWD}:/workspace \
+          gcr.io/kaniko-project/executor:latest \
+          --dockerfile /workspace/.docker/images/gctwebapp/Dockerfile \
+          --destination "gcr.io/$PROJECT_ID/$IMAGE_NAME:$GITHUB_SHA" \
+          --context dir:///workspace/
+        working-directory: .
+        
+      # Deploy image to Cloud Run
+      - name: Deploy GCR
+        run: |-
+          gcloud run deploy "$SERVICE_NAME" \
+            --quiet \
+            --region "$RUN_REGION" \
+            --image "gcr.io/$PROJECT_ID/$IMAGE_NAME:$GITHUB_SHA" \
+            --platform "managed" \
+            --set-env-vars REDIS_CONNECTION_STRING=redis://10.59.94.216:6379,GCT_ENV=DEV \
+            --max-instances=4 \
+            --concurrency= 10 \
+            --allow-unauthenticated

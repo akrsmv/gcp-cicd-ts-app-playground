@@ -66,12 +66,11 @@ jobs:
       - name: Deploy GCR
         run: |-
           gcloud run deploy "$SERVICE_NAME" \
-            --quiet \
-            --region "$RUN_REGION" \
-            --vpc-connector gctapp-ew3 \
             --image "gcr.io/$PROJECT_ID/$IMAGE_NAME:$GITHUB_SHA" \
-            --platform "managed" \
+            --region europe-west3 \
+            --vpc-connector gctapp-ew3 \
+            --platform managed \
             --set-env-vars "REDIS_CONNECTION_STRING=redis://10.59.94.216:6379,GCT_ENV=DEV" \
-            --max-instances=4 \
+            --max-instances=1 \
             --allow-unauthenticated \
             --port=$PORT

@@ -1,1 +1,38 @@
-[]
+[
+  {
+    "_id": "e3d61a1d-7a92-4f31-93ff-501f12640948",
+    "name": "localdev",
+    "default": true,
+    "sortNum": 10000,
+    "created": "2023-03-03T12:33:59.052Z",
+    "modified": "2023-03-03T12:33:59.052Z",
+    "data": [
+      {
+        "name": "gct_api",
+        "value": "http://localhost:8080"
+      },
+      {
+        "name": "useLocalfs",
+        "value": "true"
+      }
+    ]
+  },
+  {
+    "_id": "47a3fed1-c5c9-48b2-9ea9-67f306837f2e",
+    "name": "dev",
+    "default": false,
+    "sortNum": 20000,
+    "created": "2023-03-03T12:42:48.152Z",
+    "modified": "2023-03-03T12:42:48.152Z",
+    "data": [
+      {
+        "name": "gct_api",
+        "value": "https://gctapp-api-ehlgqdbr7q-ey.a.run.app"
+      },
+      {
+        "name": "useLocalfs",
+        "value": "true"
+      }
+    ]
+  }
+]

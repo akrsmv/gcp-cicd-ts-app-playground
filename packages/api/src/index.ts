@@ -4,6 +4,7 @@ import { generateSampleFiles, getPrices, initServiceClients, rebuildIndex } from
 import { handleGctErrors } from './errorHandling';
 import cors from 'cors';
 import path from 'path';
+import { removeSampleFiles } from '@gctapp/core';
 
 dotenv.config();
 
@@ -45,6 +46,11 @@ app.post('/admin/electricity/prices/index/rebuild', async (req, res, next) => {
 
 app.post('/admin/sampledata/generate', async (req, res, next) => {
     const prices = await generateSampleFiles(req.body)
+    res.send(prices)
+})
+
+app.post('/admin/sampledata/remove', async (req, res, next) => {
+    const prices = await removeSampleFiles()
     res.send(prices)
 })
 

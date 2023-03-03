@@ -4,7 +4,7 @@ export * from './log'
 export * from './dataStore'
 export * from './errors'
 export * from './interfaces-public'
-export { generateSampleFiles } from './_devtools'
+export { generateSampleFiles, removeSampleFiles } from './_devtools'
 
 /**
 * Readiness of the library. 

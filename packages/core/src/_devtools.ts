@@ -2,7 +2,7 @@ import { GetFilesOptions } from "@google-cloud/storage"
 import { timeStamp } from "console"
 import { R_OK } from "constants"
 import { createWriteStream, WriteStream } from "fs"
-import { access, appendFile, mkdir, opendir, readFile, writeFile } from "fs/promises"
+import { access, appendFile, mkdir, opendir, readFile, rm, writeFile } from "fs/promises"
 import { dirname, join } from "path"
 import { validateRequest } from "./dataStore"
 import { GetDataInput, YearMonthDay } from "./interfaces-private"
@@ -71,6 +71,10 @@ export const generateSampleFiles = async (params: GenerateSampleData) => {
     }
 }
 
+export const removeSampleFiles = async () => {
+    await rm(dirname(join(_cacheDir)),{recursive: true, force: true})
+}
+
 const ticksRange = (forDay: Date, step: number) => {
     const dayStartMilis = forDay.getTime()
     return arrayRange(dayStartMilis, dayStartMilis + 24 * 60 * 60 * 1000 - 1, step)
@@ -101,16 +105,10 @@ function* generateOneDaySampleData(forDay: Date, params: GenerateSampleData): Ge
  * @param path Starting directory path
  */
 export async function* dirFilesGenerator(path: string): AsyncGenerator<string, void, void> {
-    const MAX_FILES_ALLOWED = 365*5+1 // (+1 for the leap year)
-    let _counter = 0
     const dirIterator = await opendir(path)
     for await (const dirent of dirIterator) {
         if (dirent.isDirectory()) {
-            _counter ++
-            if (_counter > MAX_FILES_ALLOWED) {
-                return
-            }  
-            yield* dirFilesGenerator(join(path, dirent.name))          
+            yield* dirFilesGenerator(join(path, dirent.name))
         } else {
             yield join(path, dirent.name)
         }
@@ -141,7 +139,7 @@ const batchGetFiles = async (query?: GetFilesOptions): Promise<void> => {
 //#region gcs keys generator
 
 /**
- * 
+ * Maximum of 5 years of data allowed
  * @param req 
  * @param prefix to prefix each generated key
  * @returns When `req.end` is not defined, a single key. Example:
@@ -172,9 +170,15 @@ const batchGetFiles = async (query?: GetFilesOptions): Promise<void> => {
  * ```
  */
 async function* gcsKeysGenerator(req: GetDataInput, prefix: string): AsyncGenerator<[Date, string], void, void> {
+    const MAX_FILES_ALLOWED = 365 * 5 + 1 // (+1 for the leap year)
+    let _counter = 0
     for (let y = req.start!.year; y <= (req.end.year ?? req.start!.year); y++) {
         for (let m = req.start!.month; m <= monthRange(y, req); m++) {
             for (let d = req.start!.day; d <= dayRange(y, m, req); d++) {
+                _counter++
+                if (_counter > MAX_FILES_ALLOWED) {
+                    return
+                }
                 yield [
                     ymdToUTCDate({ year: y, month: m, day: d }),
                     `${prefix}/${y}/${withZero(m)}/${withZero(d)}.jsonl`

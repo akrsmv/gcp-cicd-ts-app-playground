@@ -23,7 +23,7 @@ interface IMonorepoTodoItemsState {
  * great way to easily have global storage
  * By https://www.npmjs.com/package/zustand
  */
-export const useCountStore = create<IMonorepoTodoItemsState>()(
+export const useTodoItemsStore = create<IMonorepoTodoItemsState>()(
     devtools(
         persist(
             subscribeWithSelector((set) =>
@@ -51,7 +51,7 @@ export const useCountStore = create<IMonorepoTodoItemsState>()(
                 })
             })),
             {
-                name: 'count-storage',
+                name: 'todo-items-storage',
             }
         )
     )

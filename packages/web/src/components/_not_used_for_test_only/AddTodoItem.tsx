@@ -1,11 +1,11 @@
 import { useState, useCallback } from "react";
-import { ITodoItemState, useCountStore } from "../stores/TodoItemsStore";
-import { PROJECT } from "./Project";
-import { GCTButton, GCTCheckBox, GCTInput } from "../components-layout/Theme";
+import { ButtonStyled, CheckBoxStyled, InputStyled } from "../../components-layout/Theme";
+import { ITodoItemState, useTodoItemsStore } from "../../stores/TodoItemsStore";
+import { PROJECT } from "../Project";
 
 export const AddTodoItem = () => {
   const _emptyNewItem: Omit<ITodoItemState, "id"> = { desc: "", labels: [] }
-  const todoStore = useCountStore()
+  const todoStore = useTodoItemsStore()
   const [itemToAdd, setItemToAdd] = useState(_emptyNewItem)
 
   // pull necessary utilities from global model
@@ -32,7 +32,7 @@ export const AddTodoItem = () => {
 
   return (
     <>
-      <GCTInput
+      <InputStyled
         type="text"
         placeholder="Recall something more Todo?"
         value={itemToAdd.desc}
@@ -41,7 +41,7 @@ export const AddTodoItem = () => {
       {
         Object.values(PROJECT).map((project_name, index) => (
           <span key={`${project_name}-${index}`}>
-            <GCTCheckBox
+            <CheckBoxStyled
               type="checkbox"
               checked={itemToAdd.labels.includes(project_name)}
               onChange={(e) => toggleLabel(project_name, e.target.checked)} />
@@ -49,9 +49,9 @@ export const AddTodoItem = () => {
           </span>
         ))
       }
-      <GCTButton onClick={handleAddNewItem}>
+      <ButtonStyled onClick={handleAddNewItem}>
         Add Todo Item
-      </GCTButton>
+      </ButtonStyled>
     </>
   )
 }

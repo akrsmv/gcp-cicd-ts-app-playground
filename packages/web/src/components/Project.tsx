@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react"
-import { useCountStore, ITodoItemState } from "../stores/TodoItemsStore"
+import { useTodoItemsStore, ITodoItemState } from "../stores/TodoItemsStore"
 import { DatePickerRange } from "./DatePickerRange"
 import { TodoItem } from "./TodoItem"
 
@@ -13,14 +13,14 @@ export const PROJECT_NAMESPACE = "@gctapp"
 
 export const Project = (props: any) => {
     const { project_name } = props
-    const todoStore = useCountStore()
+    const todoStore = useTodoItemsStore()
 
     // local state pulled from global store
     const [projectTodoItems, setProjectTodoItems] = useState(todoStore.items)
 
     // make sure you rerender when store updates
     useEffect(
-        () => useCountStore.subscribe(
+        () => useTodoItemsStore.subscribe(
             (state) => state.items, // zustane selector middleware, i.e subscribe only for changes on this property 
             setProjectTodoItems
         ), []

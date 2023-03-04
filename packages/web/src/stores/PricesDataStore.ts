@@ -13,22 +13,19 @@ export interface PriceDataState {
 
 const newData = async (params: LoadDataParams) => {
     const { periodCount, periodType } = params
-    const res = await fetch(`${GCT_API}/prices?${periodType}=${periodCount}&c=bgn`)
+    const res = await fetch(`${GCT_API}/prices?${periodType}=${periodCount}&u=bgn`)
     return await res.json()
 }
 
 export const usePriceStore = create<PriceDataState>()(
     devtools(
         persist(
-            // subscribeWithSelector(
-                (set) =>
-                ({
-                    load: async (params: LoadDataParams) =>
-                        set(Object.assign({}, { data: await newData(params) }), true),
-                    data: []
-                })
-                // )
-                ,
+            (set) =>
+            ({
+                load: async (params: LoadDataParams) =>
+                    set(Object.assign({}, { data: await newData(params) }), true),
+                data: []
+            }),
             {
                 name: 'gctapp-price-data',
             }

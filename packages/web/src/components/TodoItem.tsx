@@ -1,18 +1,18 @@
-import { GCTButton, GCTInput } from "../components-layout/Theme";
+import { ButtonStyled, InputStyled } from "../components-layout/Theme";
 
 export const TodoItem = (props: any) => {
   const {updateTodo, removeTodo, todo} = props
   const handleDeleteButton = () => removeTodo(todo.id)
   return (
     <>
-      <GCTInput
+      <InputStyled
         type="text"
         value={todo.desc}
         onChange={(e) => updateTodo(todo.id, e.target.value)}
       />
-      <GCTButton onClick={handleDeleteButton}>
+      <ButtonStyled onClick={handleDeleteButton}>
         Delete
-      </GCTButton>
+      </ButtonStyled>
     </>
   );
 }

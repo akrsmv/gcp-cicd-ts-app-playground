@@ -5,15 +5,13 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import { ThemeProvider } from 'styled-components';
 import React from 'react';
-import { defaultTheme, GCTContainer, GCTContainerFullSpace, GCTContent1, GCTContent2, GCTContent3, GCTContent4, GCTContentBox, GCTFooter, GCTMain, GCTNavBar, GCTSideBar } from './components-layout/Theme';
 import { HorizontalNavigation } from './components-layout/HorizontalNavigation';
-import { AddTodoItem } from './components/AddTodoItem';
+import { AddTodoItem } from './components/_not_used_for_test_only/AddTodoItem';
 import { SideNavigation } from './components-layout/SideNavigation';
 import { AdvancedChart } from 'react-tradingview-embed';
 // import { TVChartLight } from './components/TVChartLight'
-import { usePriceStore } from './stores/PricesDataStore';
-import { TOP_ROUTES, SIDE_ROUTES } from './components-layout/GctRoute';
 import { ElecticityChart } from './components/NivoChart';
+import { defaultTheme, ContainerStyled, NavBarStyled, MainStyled, SideBarStyled, ContentBoxesStyled, ContentStyled, FooterStyled } from './components-layout/Theme';
 
 function App() {
   //eslint-disable-next-line
@@ -21,34 +19,29 @@ function App() {
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
-        <GCTContainer>
-          <GCTNavBar><HorizontalNavigation /></GCTNavBar>
-          <GCTMain>
+        <ContainerStyled>
+          <HorizontalNavigation />
+          <MainStyled>
             <Routes>
-              <Route path={SIDE_ROUTES.ELECTRICITY_USAGE} element={
-                <GCTContainerFullSpace>
-                  <ElecticityChart></ElecticityChart>
-                </GCTContainerFullSpace>
-              }
-              />
+              <Route path="/" element={<ElecticityChart />} />
               {/* <Route path={SIDE_ROUTES.ELECTRICITY_PRICE} element={<TVChartLight store={usePriceStore}></TVChartLight>} /> */}
-              <Route path={SIDE_ROUTES.TEST_TV_ADVANCED} element={<AdvancedChart widgetProps={{ "theme": "dark" }} />} />
-              <Route path={SIDE_ROUTES.TEST_AGGRID} element={<></>} />
+              {/* <Route path={SIDE_ROUTES.TEST_TV_ADVANCED} element={<AdvancedChart widgetProps={{ "theme": "dark" }} />} />
+              <Route path={SIDE_ROUTES.TEST_AGGRID} element={<></>} /> */}
 
-              <Route path={TOP_ROUTES.ACCOUNT_SETTINGS} element={<></>} />
+              {/* <Route path={TOP_ROUTES.ACCOUNT_SETTINGS} element={<></>} />
               <Route path={TOP_ROUTES.ACCOUNT_LOGIN} element={<></>} />
-              <Route path={TOP_ROUTES.ACCOUNT_WALLET} element={<></>} />
+              <Route path={TOP_ROUTES.ACCOUNT_WALLET} element={<></>} /> */}
             </Routes>
-          </GCTMain>
-          <GCTSideBar><SideNavigation /></GCTSideBar>
-          <GCTContentBox>
-            <GCTContent1><Project project_name={PROJECT.API} /></GCTContent1>
-            <GCTContent2><Project project_name={PROJECT.CORE} /></GCTContent2>
-            <GCTContent3><Project project_name={PROJECT.WEB} /></GCTContent3>
-            <GCTContent4><Project project_name={PROJECT.CICD} /></GCTContent4>
-          </GCTContentBox>
-          <GCTFooter><AddTodoItem /></GCTFooter>
-        </GCTContainer>
+          </MainStyled>
+          <SideNavigation />
+          <ContentBoxesStyled>
+            <ContentStyled><Project project_name={PROJECT.API} /></ContentStyled>
+            <ContentStyled><Project project_name={PROJECT.CORE} /></ContentStyled>
+            <ContentStyled><Project project_name={PROJECT.WEB} /></ContentStyled>
+            <ContentStyled><Project project_name={PROJECT.CICD} /></ContentStyled>
+          </ContentBoxesStyled>
+          <FooterStyled><AddTodoItem /></FooterStyled>
+        </ContainerStyled>
         <ToastContainer />
       </ThemeProvider>
     </BrowserRouter>

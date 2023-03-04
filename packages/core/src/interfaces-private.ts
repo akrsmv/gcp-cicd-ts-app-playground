@@ -2,7 +2,6 @@
 
 import { GetDataRequest } from "./interfaces-public"
 
-
 /**
  * Validated and transformed GetDataRequest
  */
@@ -16,21 +15,15 @@ export interface YearMonthDay {
     month: number
     day: number
 }
-/** For future use
- */
-export interface PriceData {
-    timestamp: number
-    price: number
-    currency: string
-}
-/** For future use
- */
-export interface UsageData {
-    timestamp: number
-    kwh: number
-}
 
 export interface ValidateDateInput extends GetDataRequest {
     callerStr?: string
     setDefaultStartDate: boolean
 }
+
+export interface GctDataKind {
+    indexName: string,
+    unit: string
+}
+
+export type GctData<Data, Name extends keyof Data> = { [key in Name]: GctDataKind }

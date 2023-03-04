@@ -1,10 +1,9 @@
 import { DownloadResponse, TransferManager } from '@google-cloud/storage'
 import { createInterface } from 'readline/promises'
 import { PassThrough } from 'stream'
-import { GctError, GctErrorMessage } from './errors'
 import { GetDataRequest } from './interfaces-public'
-import { GetDataInput, YearMonthDay } from './interfaces-private'
-import { datePattern, getDaysInMonth, validateInputDate, withZero, dateToYmd, ymdToUTCDate } from './utils'
+import { GctDataKind, GetDataInput } from './interfaces-private'
+import { datePattern, validateInputDate, withZero, dateToYmd, ymdToUTCDate } from './utils'
 import { getGcsBucket, getMemoryStoreClient } from './serviceClients'
 import { _loadFilesFromLocalMachine } from './_devtools'
 
@@ -52,14 +51,14 @@ export const validateRequest = (req: GetDataRequest): GetDataInput => {
  * @returns 
  * price data in requested range. If there is no range, i.e `params.range` is undefined, returns data only for the `start` date
  */
-export const getPrices = async (params: GetDataRequest) => {
+export const getGctTSData = async (type: GctDataKind, params: GetDataRequest) => {
     const input = validateRequest(params)
     const end = new Date(`${input.end.year}-${withZero(input.end.month)}-${withZero(input.end.day)}T23:59:59.999Z`).getTime().toString()
     let start: string = new Date(`${input.end.year}-${withZero(input.end.month)}-${withZero(input.end.day)}T00:00:00.000Z`).getTime().toString()
     if (input.start) {
         start = new Date(`${input.start.year}-${withZero(input.start.month)}-${withZero(input.start.day)}T00:00:00.000Z`).getTime().toString()
     }
-    return await (await getMemoryStoreClient().XRANGE('prices:bgn', start, end)).map(res => ({ time: Number(res.message.time)/1000, value: Number(res.message.value) }))
+    return await (await getMemoryStoreClient().XRANGE(`${type.indexName}:${type.unit}`, start, end)).map(res => ({ time: Number(res.message.time)/1000, value: Number(res.message.value) }))
 }
 
 /**
@@ -72,16 +71,19 @@ export const getPrices = async (params: GetDataRequest) => {
  *  
  * @param index name of redis stream key
  */
-export const rebuildIndex = async (index: string, useLocalfs?: boolean): Promise<void> => {
+export const rebuildIndex = async (indexInfo: GctDataKind, useLocalfs?: boolean): Promise<void> => {
 
     let files: void | DownloadResponse[]
+    // BEWARE 
+    // data in buckets is not organized under different units,
+    // therefore passing only indexName below
     if (useLocalfs) {
         // simulate download from GCS
-        files = await _loadFilesFromLocalMachine() as unknown as DownloadResponse[]
+        files = await _loadFilesFromLocalMachine(indexInfo.indexName) as unknown as DownloadResponse[]
     } else {
         // download from GCS
         const transferManager = new TransferManager(getGcsBucket())
-        files = await transferManager.downloadManyFiles(index)
+        files = await transferManager.downloadManyFiles(indexInfo.indexName) 
     }
 
     // convert numeric keys to strings befre sending via node-redis
@@ -96,8 +98,10 @@ export const rebuildIndex = async (index: string, useLocalfs?: boolean): Promise
     }
 
     // transform json, leaving only time and value keys
+    // TODO refactor and leave only time/value 
     function reviver(this: any, key: any, value: any) {
         if (key === "currency") { return undefined }
+        if (key === "kwh") { this.value = value; return undefined }
         if (key === "timestamp") { this.time = value; return undefined }
         else if (key === "price") { this.value = value; return undefined }
         return value

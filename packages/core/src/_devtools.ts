@@ -12,12 +12,13 @@ import { strToYmd, withZero, dateToYmd, ymdToUTCDate } from "./utils"
 
 const _cacheDir = process.env.BUCKET_QUERIES_CACHE_DIRNAME || "localdev_files/bucket_queries_cache"
 
-export const _loadFilesFromLocalMachine = async (): Promise<[Buffer][]> => {
+export const _loadFilesFromLocalMachine = async (startDir: string): Promise<[Buffer][]> => {
+    const dirPath = join(_cacheDir,startDir)
     try {
-        await access(_cacheDir, R_OK)
-        return await loadJsonFiles(_cacheDir)
+        await access(dirPath, R_OK)
+        return await loadJsonFiles(dirPath)
     } catch {
-        logwarn('no cached data for ', _cacheDir, '. Cannot load from local machine')
+        logwarn('no cached data for ', dirPath, '. Cannot load from local machine')
     }
     return []
 }

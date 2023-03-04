@@ -1,5 +1,4 @@
-// Interfaces that are not exported in this package index
-
+// Interfaces that are exported from this package index
 export interface GetDataRequest {
     year?: string
     month?: string

@@ -14,7 +14,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "concurrently \"tsc --watch\" \"nodemon --inspect dist/index.js\"",
+    "dev": "concurrently \"nodemon --inspect dist/index.js\" \"tsc --watch\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

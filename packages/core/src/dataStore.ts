@@ -72,7 +72,6 @@ export const getGctTSData = async (type: GctDataKind, params: GetDataRequest) =>
  * @param index name of redis stream key
  */
 export const rebuildIndex = async (indexInfo: GctDataKind, useLocalfs?: boolean): Promise<void> => {
-
     let files: void | DownloadResponse[]
     // BEWARE 
     // data in buckets is not organized under different units,
@@ -88,7 +87,10 @@ export const rebuildIndex = async (indexInfo: GctDataKind, useLocalfs?: boolean)
 
     // convert numeric keys to strings befre sending via node-redis
     // https://github.com/redis/node-redis/issues/1808
-    // https://github.com/redis/node-redis/issues/2019#issuecomment-1445349845 
+    // https://github.com/redis/node-redis/issues/2019#issuecomment-1445349845
+
+    // TODO make replacer/reviver as mappers by GctDataKind objects
+    
     function replacer(key: string, value: any) {
         // Filtering out properties
         if (typeof value === "number") {
@@ -96,15 +98,12 @@ export const rebuildIndex = async (indexInfo: GctDataKind, useLocalfs?: boolean)
         }
         return value;
     }
-
     // transform json, leaving only time and value keys
-    // TODO refactor and leave only time/value 
     function reviver(this: any, key: any, value: any) {
-        if (key === "currency") { return undefined }
-        if (key === "kwh") { this.value = value; return undefined }
         if (key === "timestamp") { this.time = value; return undefined }
+        if (key === "kwh") { this.value = value; return undefined }
         else if (key === "price") { this.value = value; return undefined }
-        return value
+        return typeof value === 'object' ? value : undefined
     }
 
     if (files && files.length) {
@@ -117,10 +116,11 @@ export const rebuildIndex = async (indexInfo: GctDataKind, useLocalfs?: boolean)
                     mapUnsorted.set(pricePoint.timestamp, pricePoint)
                 }
             }))
+
         const mapSorted = new Map([...mapUnsorted.entries()].sort());
 
         for (const pricePoint of mapSorted.values()) {
-            getMemoryStoreClient().xAdd(`prices:${String(pricePoint.currency).toLowerCase()}`, String(pricePoint.timestamp), JSON.parse(JSON.stringify(pricePoint, replacer), reviver))
+            getMemoryStoreClient().xAdd(`${indexInfo.indexName}:${indexInfo.unit}`, String(pricePoint.timestamp), JSON.parse(JSON.stringify(pricePoint, replacer), reviver))
         }
     }
 }

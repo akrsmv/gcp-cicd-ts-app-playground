@@ -22,5 +22,5 @@ export const tsDataRange = (req: any): GetDataRequest => ({
  */
 export const tsDataKind = (req: any): GctDataKind => ({
     indexName: req.params?.dataKind,
-    unit: req.params?.dataUnit
+    unit: req.query?.u
 })

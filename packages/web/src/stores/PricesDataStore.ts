@@ -13,7 +13,7 @@ export interface PriceDataState {
 
 const newData = async (params: LoadDataParams) => {
     const { count, type } = params
-    const res = await fetch(`${GCT_API}/electricity/prices?${type}=${count}`)
+    const res = await fetch(`${GCT_API}/prices?${type}=${count}`)
     return await res.json()
 }
 

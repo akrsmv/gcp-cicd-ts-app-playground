@@ -1,4 +1,4 @@
-name: Google Cloud Run Deploy
+name: WEB build&Deploy To GCP
 # https://github.com/google-github-actions/setup-gcloud
 on:
   push:

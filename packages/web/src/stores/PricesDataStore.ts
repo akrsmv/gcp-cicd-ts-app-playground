@@ -3,7 +3,7 @@ import { devtools, persist } from 'zustand/middleware'
 import { GCT_API } from '../ApiEndpointsProvider'
 
 export type LoadDataParams = {
-    count: number, type: "d" | "m" | "y"
+    periodCount: number, periodType: "d" | "m" | "y"
 }
 
 export interface PriceDataState {
@@ -12,8 +12,8 @@ export interface PriceDataState {
 }
 
 const newData = async (params: LoadDataParams) => {
-    const { count, type } = params
-    const res = await fetch(`${GCT_API}/prices?${type}=${count}`)
+    const { periodCount, periodType } = params
+    const res = await fetch(`${GCT_API}/prices?${periodType}=${periodCount}&c=bgn`)
     return await res.json()
 }
 

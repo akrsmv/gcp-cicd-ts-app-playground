@@ -7,7 +7,8 @@ export enum GctErrorMessage {
     GCTE402 = "invalid date of month",
     GCTE403 = "invalid endDate",
 
-    GCTE500 = "Invalid data query was passed",
+    GCTE500 = "Invalid data query",
+    GCTE501 = "Invalid index info",
 
     GCTE900 = "Error generating sample data",
 }

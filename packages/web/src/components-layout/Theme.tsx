@@ -118,22 +118,34 @@ export const GCTNavBar = styled.header`
         text-decoration: none;
     }
 `;
+// export const GCTMain = styled.main`
+//   background: ${({ theme: { colors } }) => colors.green};
+//   color: white;
+//   grid-area: main;
+//   width: 100%;
+//   height: 100%;
+// //   padding: 0.25rem;
+// div {
+//     display: block;
+//     width: inherit;
+//     height: inherit;
+//     margin: 0 0px;
+//     background-color: green;
+// }
+
+// `;
+
 export const GCTMain = styled.main`
-  background: ${({ theme: { colors } }) => colors.green};
-  color: white;
   grid-area: main;
   width: 100%;
   height: 100%;
-//   padding: 0.25rem;
+  color: black;
 div {
     display: block;
     width: inherit;
     height: inherit;
     margin: 0 0px;
-    background-color: green;
-}
-
-`;
+}`;
 export const GCTSideBar = styled.div`
   background: #9aaab7;
   grid-area: sidebar;
@@ -154,33 +166,14 @@ export const GCTContent4 = styled(GCTContent1)`
     }
 `;
 export const GCTContainerFullSpace = styled.div`
-width: 100%;
-height: 100%;
-// display: flex;
-// display: block;
-// justify-content: center;
-// align-items: center;
-
 div {
-    width: 100%;
-    height: 100%;
-    margin: 0 0px;
-}
-div div {
-    width: 100%;
-    height: 100%;
-    margin: 0 0px;
-}
-div div div {
-    width: 100%;
-    height: 100%;
-    margin: 0 0px;
-}
-
-div div div iframe {
-    width: 100%;
-    height: 100%;
-    margin: 0 0px;
+    display: grid;
+    top: 0px;
+    right: 0px;
+    --innerWidth: calc(100% - 60px);
+    --innerHeight: calc(100% - 60px);
+    width: calc(var(--innerWidth) * 0.55);
+    height: calc(var(--innerHeight) * 0.6);
 }
 `;
 export const GCTFooter = styled.footer`

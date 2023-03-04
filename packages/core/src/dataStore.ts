@@ -6,6 +6,7 @@ import { GctDataKind, GetDataInput } from './interfaces-private'
 import { datePattern, validateInputDate, withZero, dateToYmd, ymdToUTCDate } from './utils'
 import { getGcsBucket, getMemoryStoreClient } from './serviceClients'
 import { _loadFilesFromLocalMachine } from './_devtools'
+import { GctError, GctErrorMessage } from './errors'
 
 /**
  * Validate and Transform incoming request
@@ -72,6 +73,9 @@ export const getGctTSData = async (type: GctDataKind, params: GetDataRequest) =>
  * @param index name of redis stream key
  */
 export const rebuildIndex = async (indexInfo: GctDataKind, useLocalfs?: boolean): Promise<void> => {
+    if (!indexInfo.indexName || !indexInfo.unit) {
+        throw new GctError("GCTE50", GctErrorMessage["GCTE501"])
+    }
     let files: void | DownloadResponse[]
     // BEWARE 
     // data in buckets is not organized under different units,

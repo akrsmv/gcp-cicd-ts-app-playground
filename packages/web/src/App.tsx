@@ -5,14 +5,15 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import { ThemeProvider } from 'styled-components';
 import React from 'react';
-import { defaultTheme, GCTContainer, GCTContent1, GCTContent2, GCTContent3, GCTContent4, GCTContentBox, GCTFooter, GCTMain, GCTNavBar, GCTSideBar } from './components-layout/Theme';
+import { defaultTheme, GCTContainer, GCTContainerFullSpace, GCTContent1, GCTContent2, GCTContent3, GCTContent4, GCTContentBox, GCTFooter, GCTMain, GCTNavBar, GCTSideBar } from './components-layout/Theme';
 import { HorizontalNavigation } from './components-layout/HorizontalNavigation';
 import { AddTodoItem } from './components/AddTodoItem';
 import { SideNavigation } from './components-layout/SideNavigation';
 import { AdvancedChart } from 'react-tradingview-embed';
-import { TVChartLight } from './components/TVChartLight'
+// import { TVChartLight } from './components/TVChartLight'
 import { usePriceStore } from './stores/PricesDataStore';
 import { TOP_ROUTES, SIDE_ROUTES } from './components-layout/GctRoute';
+import { ElecticityChart } from './components/NivoChart';
 
 function App() {
   //eslint-disable-next-line
@@ -24,8 +25,13 @@ function App() {
           <GCTNavBar><HorizontalNavigation /></GCTNavBar>
           <GCTMain>
             <Routes>
-              <Route path={SIDE_ROUTES.ELECTRICITY_USAGE} element={<TVChartLight store={usePriceStore}></TVChartLight>} />
-              <Route path={SIDE_ROUTES.ELECTRICITY_PRICE} element={<TVChartLight store={usePriceStore}></TVChartLight>} />
+              <Route path={SIDE_ROUTES.ELECTRICITY_USAGE} element={
+                <GCTContainerFullSpace>
+                  <ElecticityChart></ElecticityChart>
+                </GCTContainerFullSpace>
+              }
+              />
+              {/* <Route path={SIDE_ROUTES.ELECTRICITY_PRICE} element={<TVChartLight store={usePriceStore}></TVChartLight>} /> */}
               <Route path={SIDE_ROUTES.TEST_TV_ADVANCED} element={<AdvancedChart widgetProps={{ "theme": "dark" }} />} />
               <Route path={SIDE_ROUTES.TEST_AGGRID} element={<></>} />
 

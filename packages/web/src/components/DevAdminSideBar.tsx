@@ -26,17 +26,17 @@ export const DevIndexManagement = (props: any) => {
             </button>
             <p hidden={selected !== `${reloadFromGCSData}/${index}}`}>
                 flush redis key <i> {props.index} </i> and reload from from <u>GCS</u>?
-                <a onClick={() => alert(`${reloadFromGCSData}/${index}}`)}>Proceed</a>
+                <a href="" id="dev-link" onClick={() => alert(`TODO: ${reloadFromGCSData}/${index}}`)}><u>Proceed</u></a>
                 &nbsp;
-                <a onClick={() => selectionStore.updateSelection('')}>cancel</a>
+                <a href="" id="dev-link" onClick={() => selectionStore.updateSelection('')}><u>cancel</u></a>
             </p>
 
             <button onClick={() => selectionStore.updateSelection(`${reloadFromTESTData}/${index}}`)}>{reloadFromTESTData}</button>
             <p hidden={selected !== `${reloadFromTESTData}/${index}}`}>
                 flush redis key <i> {props.index} </i> and reload from from <u>GCS</u >?
-                <a onClick={() => alert(`${reloadFromTESTData}/${index}}`)}>Proceed</a>
+                <a href="" id="dev-link" onClick={() => alert(`TODO: ${reloadFromTESTData}/${index}}`)}>Proceed</a>
                 &nbsp;
-                <a onClick={() => selectionStore.updateSelection('')}>cancel</a>
+                <a href="" id="dev-link" onClick={() => selectionStore.updateSelection('')}>cancel</a>
             </p>
 
         </nav>

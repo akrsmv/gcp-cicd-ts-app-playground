@@ -67,6 +67,7 @@ export const ContentBoxesStyled = styled.div`
 
 export const FooterStyled = styled.footer`
     background: ${({ theme: { colors } }) => colors.white};
+    color: ${({ theme: { colors } }) => colors.dark};
     grid-area: footer;
     padding: 0.25rem;
     text-align: left;
@@ -81,6 +82,11 @@ export const SideBarStyled = styled.div`
     grid-area: sidebar;
     padding: 0.25rem;
     border: 1px solid ${({ theme: { colors } }) => colors.onyx};
+
+    a#dev-link:hover {
+        text-transform: uppercase;
+        text-decoration: none;
+    }
 
     #under-construction-img {
         width: 100%;
@@ -187,6 +193,10 @@ export const ContentStyled = styled.div`
   padding: 0.25em;
   width: 100%;
   height: 100%;
+`;
+
+export const ContentStyled1 = styled(ContentStyled)`
+    background: white;
 `;
 
 export const NivoContainerStyled = styled.div`

@@ -7,8 +7,9 @@ import React, { useState } from 'react';
 import { HorizontalNavigation } from './components-layout/HorizontalNavigation';
 import { SideNavigation } from './components-layout/SideNavigation';
 // import { TVChartLight } from './components/TVChartLight'
-import { defaultTheme, ContainerStyled, MainStyled, ContentBoxesStyled, ContentStyled, FooterStyled } from './components-layout/Theme';
+import { defaultTheme, ContainerStyled, MainStyled, ContentBoxesStyled, ContentStyled, FooterStyled, NivoContainerStyled, ContentStyled1 } from './components-layout/Theme';
 import { TVChartLight } from './components/TVChartLight';
+import { NivoPieChart } from './components/NivoPieChart';
 
 function App() {
   //eslint-disable-next-line
@@ -27,12 +28,12 @@ function App() {
           </MainStyled>
           <SideNavigation />
           <ContentBoxesStyled>
-            <ContentStyled></ContentStyled>
-            <ContentStyled></ContentStyled>
-            <ContentStyled></ContentStyled>
-            <ContentStyled></ContentStyled>
+            <ContentStyled1><NivoPieChart /></ContentStyled1>
+            <ContentStyled><>TODO: Nivo Bar chart here</></ContentStyled>
+            <ContentStyled><>TODO: Suggestions/News from SSE</></ContentStyled>
+            <ContentStyled>TODO: Suggestions/News from SSE</ContentStyled>
           </ContentBoxesStyled>
-          <FooterStyled></FooterStyled>
+          <FooterStyled>TODO: more messages from SSE? or Some footer</FooterStyled>
         </ContainerStyled>
         <ToastContainer />
       </ThemeProvider>

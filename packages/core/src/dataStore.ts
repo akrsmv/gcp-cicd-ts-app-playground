@@ -13,6 +13,7 @@ import { GctError, GctErrorMessage } from './errors'
  * @param req
  */
 export const validateRequest = (req: GetDataRequest): GetDataInput => {
+    
     // get number representation of optional relative time params
     const daysBack = Number(req.daysBack)
     const monthsBack = Number(req.monthsBack)

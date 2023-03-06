@@ -2,7 +2,7 @@
   {
     "_id": "4678d6a6-7caf-4a0a-b3e7-ada9a3598faf",
     "name": "dev",
-    "default": true,
+    "default": false,
     "sortNum": 10000,
     "created": "2023-03-04T13:23:24.970Z",
     "modified": "2023-03-04T13:23:24.970Z",
@@ -20,7 +20,7 @@
   {
     "_id": "0e156275-4430-4c4a-9daa-68945d7b3c00",
     "name": "localdev",
-    "default": false,
+    "default": true,
     "sortNum": 20000,
     "created": "2023-03-04T13:24:07.557Z",
     "modified": "2023-03-04T13:24:07.557Z",

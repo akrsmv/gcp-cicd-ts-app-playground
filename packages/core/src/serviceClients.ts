@@ -28,14 +28,15 @@ export const getGcsStorage = (): Storage => {
     if (!_gcsStorage) {
         _gcsStorage = process.env.GCT_ENV === "LOCALDEV" ? new Storage(
             {
-                projectId: 'toki-take-home-2023',
+                projectId: process.env.BUCKET_NAME,
                 keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS
             })
-            : process.env.GCT_ENV === "DEV" ? new Storage(
-                {
-                    projectId: 'toki-take-home-2023',
-                    keyFilename: process.env.TOKI_CREDENTIALS
-                })
+            // Were credentials revoked?, use own then
+            // : process.env.GCT_ENV === "DEV" ? new Storage(
+            //     {
+            //         projectId: process.env.TOKI_BUCKET_NAME,
+            //         keyFilename: process.env.TOKI_CREDENTIALS
+            //     })
                 // if not localdev, Creates a client using Application Default Credentials
                 : new Storage()
     }

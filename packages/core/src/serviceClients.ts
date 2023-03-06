@@ -31,8 +31,13 @@ export const getGcsStorage = (): Storage => {
                 projectId: 'toki-take-home-2023',
                 keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS
             })
-            // if not localdev, Creates a client using Application Default Credentials
-            : new Storage()
+            : process.env.GCT_ENV === "DEV" ? new Storage(
+                {
+                    projectId: 'toki-take-home-2023',
+                    keyFilename: process.env.TOKI_CREDENTIALS
+                })
+                // if not localdev, Creates a client using Application Default Credentials
+                : new Storage()
     }
     return _gcsStorage
 }
@@ -45,7 +50,7 @@ export const getGcsBucket = (): Bucket => {
 
 export const initMemoryStoreClient = async () => {
     if (!_memoryStoreClient) {
-        _memoryStoreClient = createClient({ 
+        _memoryStoreClient = createClient({
             url: process.env.REDIS_CONNECTION_STRING ?? `redis://127.0.0.1:6379`,
             password: process.env.REDIS_PWD
         })

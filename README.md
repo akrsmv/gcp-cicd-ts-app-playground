@@ -33,7 +33,8 @@ Example app context is: _Energy consumption optimization app._
 TODOS amd milestones
 (_Disclaimer:_ Im just starting with this, so milestones may change drasticly)
 
-#--
+#### Basic CICD  
+
 - Deployment of 2 images in Google Cloud Run
     - gctapp/web (react, served with nginx)
     - gctapp/api (express)
@@ -41,8 +42,9 @@ TODOS amd milestones
 
 __update__:  There are Github worklfow actions for the `dev` branch (for now only), which, upon commits in respective places will trigger a redeployment of API/WEB
 
-#--
+#### Project structure and tech stack
 
+- pure npm monorepo (without lerna / nx)
 - redis + Firebase (Maybe later), or ~~Tick Stack + Firebase~~, oor only ~~firebase~~? Or just Redis Enterprise in Google.
     - __DONE__~~I Reaaally wanna try out the Redis Time Series module~~
     - Research for a decent visualization library
@@ -51,7 +53,7 @@ __update__:  There are Github worklfow actions for the `dev` branch (for now onl
 
 __update__:  With Redis [Time Series](https://redis.io/docs/stack/timeseries/), I pull data from google storage and push them to redis time series (which is also a stream, but supports for real time downsampling, i.e aggregations, transformations etc). [Nivo](https://nivo.rocks/) looks great but for huge amount of data [requires more research](https://www.influxdata.com/blog/data-visualization-reactjs-nivo-influxdb/). On the other hand [Trading View lightweight charts](https://tradingview.github.io/lightweight-charts/tutorials/how_to/two-price-scales) behaves very well with litle sonfiguration
 
-#--
+#### Data Preparation
 
 - work 'offline' with some mock data. __DONE__~~Prepare Data generator~~
 - webapp UX, visualizations of data in various views
@@ -87,8 +89,9 @@ Notes:
     - pushing any suggestions/notifications to clients
 - Use [redis srtreams](https://redis.io/docs/data-types/streams/), and [redis Pub/Sub](https://redis.io/docs/manual/pubsub/) for event bus, and from where backend services will react and do analyses over new data
 
-##--
+#### More Backend development
 
+- Unblocked only after Redis Pub/Sub is ready, since we wanna do reactive architecture/ no service to service communication
 - basic data analisis, ~~and endpoint exposing them as recomendations~~ And push notifications to clients
 - Authentication (just basic integration with GCP Auth, no business roles etc)
 - Multitenancy: Lets build a _Energy optimization SaaS_

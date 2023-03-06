@@ -12,14 +12,14 @@ download and install dependencies (`git clone ...` && `cd && npm install`)
 
 `npm run web` Starts a regular react app in dev mode, default port `3000`
 
-`npm run api` Starts the express API used, at port `8080`
+`npm run build && npm run api` Starts the express API used, at port `8080`
 
 `npm run redis` NOTE: since data is being stored in Redis as time series, running the api is not enough, you need local redis
 
 
 __EDIT__ for the thoughts around redis + firebase or redis + mongo etc.. _Redis Enterprise has a huge progress_, and now it is being used as a central event bus, in reactive micro service architectures. 
 Basically you get all in one: (functionalities of Kafka and the app-synchronization of fire base, if you like), with litle maintanence and configuration
-  
+
 So I will focus only on it, ofcourse thinking of some cold storage/backups etc
 
 Insipired by talk: https://www.youtube.com/watch?v=odhL_bP9XTQ

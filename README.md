@@ -22,7 +22,7 @@ Basically you get all in one: (functionalities of Kafka and the app-synchronizat
 
 So I will focus only on it, ofcourse thinking of some cold storage/backups etc
 
-Insipired by talk: https://www.youtube.com/watch?v=odhL_bP9XTQ
+Insipired by talk: [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/odhL_bP9XTQ/0.jpg)](https://www.youtube.com/watch?v=odhL_bP9XTQ)
 
 ## Test for deployment in GCP Cloud Run:
 

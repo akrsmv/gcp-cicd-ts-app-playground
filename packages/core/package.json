@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "@google-cloud/storage": "^6.9.3",
-    "redis": "^4.6.5"
+    "redis": "^4.6.5",
+    "redis-om": "^0.3.6"
   },
   "devDependencies": {
     "@types/node": "^18.14.1"

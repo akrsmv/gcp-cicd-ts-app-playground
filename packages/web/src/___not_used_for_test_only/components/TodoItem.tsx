@@ -1,4 +1,4 @@
-import { ButtonStyled, InputStyled } from "../components-layout/Theme";
+import { ButtonStyled, InputStyled } from "../../components-layout/Theme";
 
 export const TodoItem = (props: any) => {
   const {updateTodo, removeTodo, todo} = props

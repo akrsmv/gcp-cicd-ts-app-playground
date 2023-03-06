@@ -1,15 +1,15 @@
 import { useState, useCallback } from "react";
 import { ButtonStyled, CheckBoxStyled, InputStyled } from "../../components-layout/Theme";
-import { ITodoItemState, useTodoItemsStore } from "../../stores/TodoItemsStore";
-import { PROJECT } from "../Project";
+import { ITodoItemState, useTodoItemsStore } from "../stores/TodoItemsStore"
+import { PROJECT } from "./Project";
 
 export const AddTodoItem = () => {
   const _emptyNewItem: Omit<ITodoItemState, "id"> = { desc: "", labels: [] }
   const todoStore = useTodoItemsStore()
-  const [itemToAdd, setItemToAdd] = useState(_emptyNewItem)
-
   // pull necessary utilities from global model
   const addTodo = useCallback((todo: Omit<ITodoItemState, "id">) => todoStore.add(todo), [todoStore])
+
+  const [itemToAdd, setItemToAdd] = useState(_emptyNewItem)
 
   const handleAddNewItem = () => {
     // reset new item container only if adding successful

@@ -124,13 +124,13 @@ export async function* dirFilesGenerator(path: string): AsyncGenerator<string, v
  * @param bucket 
  * @param query 
  */
-const batchGetFiles = async (query?: GetFilesOptions): Promise<void> => {
+export const batchGetFiles = async (query?: GetFilesOptions): Promise<void> => {
     const [files] = await getGcsBucket().getFiles({ ...query });
     if (files.length) {
         await Promise.all(files
             .filter(file => !file.name.endsWith("/"))
             .map(async file => {
-                const cachedPath = join(_cacheDir, file.name)
+                const cachedPath = join("__GCS_DATA", file.name)
                 await mkdir(dirname(cachedPath), { recursive: true })
                 await writeFile(cachedPath, await file.download())
             }))
@@ -174,8 +174,8 @@ async function* gcsKeysGenerator(req: GetDataInput, prefix: string): AsyncGenera
     const MAX_FILES_ALLOWED = 365 * 5 + 1 // (+1 for the leap year)
     let _counter = 0
     for (let y = req.start!.year; y <= (req.end.year ?? req.start!.year); y++) {
-        for (let m = req.start!.month; m <= monthRange(y, req); m++) {
-            for (let d = req.start!.day; d <= dayRange(y, m, req); d++) {
+        for (let m = monthStartRange(y, req); m <= monthEndRange(y, req); m++) {
+            for (let d = dayStartRange(y, m, req); d <= dayEndRange(y, m, req); d++) {
                 _counter++
                 if (_counter > MAX_FILES_ALLOWED) {
                     return
@@ -203,11 +203,22 @@ const getDaysInMonth = (year: number, month: number) => {
  * @param req
  * @returns
  */
-const monthRange = (forYear: number, req: GetDataInput) => {
+const monthEndRange = (forYear: number, req: GetDataInput) => {
     if (forYear === req.end.year) {
         return req.end.month
     }
     return 12
+}
+/**
+ * @param forYear number in range [req.start.year, req.end.year]
+ * @param req
+ * @returns
+ */
+const monthStartRange = (forYear: number, req: GetDataInput) => {
+    if (forYear === req.start?.year) {
+        return req.start.month
+    }
+    return 1
 }
 /**
  * @param forMonth number in range [1, 12]
@@ -215,11 +226,24 @@ const monthRange = (forYear: number, req: GetDataInput) => {
  * @param req 
  * @returns
  */
-const dayRange = (forYear: number, forMonth: number, req: GetDataInput) => {
+const dayEndRange = (forYear: number, forMonth: number, req: GetDataInput) => {
     if (forYear === req.end.year && forMonth === req.end.month) {
         return req.end.day
     }
     return getDaysInMonth(forYear, forMonth)
+}
+
+/**
+ * @param forMonth number in range [1, 12]
+ * @param forYear number in range [req.start.year, req.end.year]
+ * @param req 
+ * @returns
+ */
+const dayStartRange = (forYear: number, forMonth: number, req: GetDataInput) => {
+    if (forYear === req.start?.year && forMonth === req.start.month) {
+        return req.start.day
+    }
+    return 1
 }
 
 const arrayRange = (start: number, stop: number, step: number) =>

@@ -11,7 +11,7 @@ services:
       context: .
       dockerfile: ./.docker/images/web/Dockerfile
       args:
-        REACT_APP_GCT_ENV: LOCALDEV
+        REACT_APP_GCT_ENV: LOCALDOCKER
       # target: gctapp-web-dev
     extra_hosts:
       - "host.docker.internal:host-gateway"

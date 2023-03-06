@@ -1,4 +1,7 @@
 {
+    "LOCALDOCKER": {
+        "gct_api": "http://localhost:28080"
+    },
     "LOCALDEV": {
         "gct_api": "http://localhost:8080"
     },

@@ -2,6 +2,8 @@
 node_modules
 dist
 localdev_files
+__GCS_DATA
 build
 tsconfig.tsbuildinfo
+
 

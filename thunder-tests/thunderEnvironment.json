@@ -34,5 +34,23 @@
         "value": "true"
       }
     ]
+  },
+  {
+    "_id": "27cdc38e-6e70-4a5c-ab56-e0b6a28428bd",
+    "name": "localdocker",
+    "default": false,
+    "sortNum": 30000,
+    "created": "2023-03-05T07:47:41.126Z",
+    "modified": "2023-03-05T07:47:41.126Z",
+    "data": [
+      {
+        "name": "gct_api",
+        "value": "http://localhost:28080"
+      },
+      {
+        "name": "useLocalfs",
+        "value": "true"
+      }
+    ]
   }
 ]

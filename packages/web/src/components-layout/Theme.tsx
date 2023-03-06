@@ -42,6 +42,10 @@ export const MainStyled = styled.main`
   width: 100%;
   height: 100%;
   color: black;
+  #full-space {
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 /**
@@ -62,21 +66,52 @@ export const ContentBoxesStyled = styled.div`
 `;
 
 export const FooterStyled = styled.footer`
-    background: ${({ theme: { colors } }) => colors.orange};  
+    background: ${({ theme: { colors } }) => colors.white};
     grid-area: footer;
     padding: 0.25rem;
     text-align: left;
+    border: 1px solid ${({ theme: { colors } }) => colors.onyx};
 `;
 export const SideBarStyled = styled.div`
     display: flex;
-    flex-direction: column;    
-    background: ${({ theme: { colors } }) => colors.orange};
+    flex-direction: column;
+    flex-basis: content;
+    color: ${({ theme: { colors } }) => colors.dark};
+    background: ${({ theme: { colors } }) => colors.white};
     grid-area: sidebar;
     padding: 0.25rem;
+    border: 1px solid ${({ theme: { colors } }) => colors.onyx};
+
     #under-construction-img {
         width: 100%;
-        background: ${({ theme: { colors } }) => colors.dark};
         margin-top: auto;
+        background-color: ${({ theme: { colors } }) => colors.orange};
+    }
+
+    nav {
+        width: 100%;
+        strong {
+            display: inline-flex;
+            justify-content: center;
+            max-width: 100%;
+            line-height: 1.2;
+            padding: 0.5em 0.1em;
+        }
+        button {
+            display: inline-flex;
+            justify-content: center;
+            max-width: 100%;
+            line-height: 1.2;
+            padding: 0.5em 0.1em;
+        }
+        button::before,
+        button::after {
+            content: '';
+            display: inline-block;
+            width: 2em;
+            flex-basis: 2em;
+            float: left;
+        }
     }
 `;
 export const NavBarStyled = styled.header`
@@ -84,13 +119,9 @@ export const NavBarStyled = styled.header`
     display: flex;  
     @media (max-width: 992px) {
         flex-direction: column;
-        margin-left: 0.07em;
     }
-    
-
     background-color: ${({ theme: { colors } }) => colors.onyx};
     font-size: ${({ theme: { fontSizes } }) => fontSizes.large};
-    color: ${({ theme: { colors } }) => colors.green};
     
     nav {
         width: 100%;
@@ -107,10 +138,9 @@ export const NavBarStyled = styled.header`
         margin: 0;
         padding-bottom: 0;
     }
-        
     li {
         display: inline;
-        border-radius: 10px;
+        border-radius: 3px;
         margin-right:20px;
         background-color: ${({ theme: { colors } }) => colors.light};
     }
@@ -137,10 +167,8 @@ export const defaultTheme: DefaultTheme = {
     borderRadius: '3px',
     colors: {
         light: "#F1F1F1",
-        onyx: "#b7b7b7",
         dark: "#534c45",
-        green: "#AFDBD2",
-        greener: "#00D0BE",
+        onyx: "#b7b7b7",
         orange: "#FF9637"
     },
     fonts: ["-apple-system", "BlinkMacSystemFont", "'Segoe UI'", "'Roboto'", "'Oxygen'",
@@ -224,3 +252,4 @@ export const CheckBoxStyled = styled.input`
     width: 20px;
     height: 20px;
 `;
+

@@ -4,7 +4,8 @@ export * from './log'
 export * from './dataStore'
 export * from './errors'
 export * from './interfaces-public'
-export { generateSampleFiles, removeSampleFiles } from './_devtools'
+// TODO this is only for dev testing should NOT be exposed
+export { generateSampleFiles, removeSampleFiles, batchGetFiles } from './_devtools'
 
 /**
 * Readiness of the library. 

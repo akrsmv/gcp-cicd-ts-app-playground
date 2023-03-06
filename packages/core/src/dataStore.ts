@@ -59,7 +59,7 @@ export const getGctTSData = async (type: GctDataKind, params: GetDataRequest) =>
     if (input.start) {
         start = new Date(`${input.start.year}-${withZero(input.start.month)}-${withZero(input.start.day)}T00:00:00.000Z`).getTime().toString()
     }
-    return await (await getMemoryStoreClient().XRANGE(`${type.indexName}:${type.unit}`, start, end)).map(res => ({ time: Number(res.message.time)/1000, value: Number(res.message.value) }))
+    return await (await getMemoryStoreClient().ts.range(`${type.indexName}:${type.unit}`, start, end)); //.map(res => ({ time: res.timestamp/1000, value: res.value }))
 }
 
 /**
@@ -76,6 +76,7 @@ export const rebuildIndex = async (indexInfo: GctDataKind, useLocalfs?: boolean)
     if (!indexInfo.indexName || !indexInfo.unit) {
         throw new GctError("GCTE50", GctErrorMessage["GCTE501"])
     }
+    await getMemoryStoreClient().del(`${indexInfo.indexName}:${indexInfo.unit}`)
     let files: void | DownloadResponse[]
     // BEWARE 
     // data in buckets is not organized under different units,
@@ -89,26 +90,26 @@ export const rebuildIndex = async (indexInfo: GctDataKind, useLocalfs?: boolean)
         files = await transferManager.downloadManyFiles(indexInfo.indexName) 
     }
 
+    //#region  ONLY NEEDED IF USING STREAMS (see below ts.ADD instead of .XADD)
     // convert numeric keys to strings befre sending via node-redis
     // https://github.com/redis/node-redis/issues/1808
     // https://github.com/redis/node-redis/issues/2019#issuecomment-1445349845
-
     // TODO make replacer/reviver as mappers by GctDataKind objects
-    
-    function replacer(key: string, value: any) {
-        // Filtering out properties
-        if (typeof value === "number") {
-            return value.toString();
-        }
-        return value;
-    }
-    // transform json, leaving only time and value keys
-    function reviver(this: any, key: any, value: any) {
-        if (key === "timestamp") { this.time = value; return undefined }
-        if (key === "kwh") { this.value = value; return undefined }
-        else if (key === "price") { this.value = value; return undefined }
-        return typeof value === 'object' ? value : undefined
-    }
+    // function replacer(key: string, value: any) {
+    //     // Filtering out properties
+    //     if (typeof value === "number") {
+    //         return value.toString();
+    //     }
+    //     return value;
+    // }
+    // // transform json, leaving only time and value keys
+    // function reviver(this: any, key: any, value: any) {
+    //     if (key === "timestamp") { this.x = value; return undefined }
+    //     if (key === "kwh") { this.y = value; return undefined }
+    //     else if (key === "price") { this.y = value; return undefined }
+    //     return typeof value === 'object' ? value : undefined
+    // }
+    //#endregion
 
     if (files && files.length) {
         const mapUnsorted = new Map<number, any>
@@ -123,8 +124,13 @@ export const rebuildIndex = async (indexInfo: GctDataKind, useLocalfs?: boolean)
 
         const mapSorted = new Map([...mapUnsorted.entries()].sort());
 
-        for (const pricePoint of mapSorted.values()) {
-            getMemoryStoreClient().xAdd(`${indexInfo.indexName}:${indexInfo.unit}`, String(pricePoint.timestamp), JSON.parse(JSON.stringify(pricePoint, replacer), reviver))
+        for (const valuePoint of mapSorted.values()) {
+            // NB! previous approuch, where replacer/reviver was needed, because redis wanted string values only
+            // getRedisClient().xAdd(`${indexInfo.indexName}:${indexInfo.unit}`, String(pricePoint.timestamp), JSON.parse(JSON.stringify(pricePoint, replacer), reviver))
+            
+            // NB! 
+            // adding either of price or kwh is present, just for this method to support both price and usage, not to branch it 
+            getMemoryStoreClient().ts.ADD(`${indexInfo.indexName}:${indexInfo.unit}`, valuePoint.timestamp, valuePoint.price ?? valuePoint.kwh)
         }
     }
 }

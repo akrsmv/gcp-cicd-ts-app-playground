@@ -4,11 +4,11 @@
     "colId": "19fa23f2-8b5d-4d0a-b60a-1af0280e5f41",
     "containerId": "e033a020-e359-48dc-b2c9-b620c62497cd",
     "name": "prices",
-    "url": "{{gct_api}}/prices/?y=5",
+    "url": "{{gct_api}}/prices/bgn/?y=5",
     "method": "GET",
     "sortNum": 60000,
     "created": "2023-03-04T13:19:45.910Z",
-    "modified": "2023-03-04T14:05:39.693Z",
+    "modified": "2023-03-05T07:53:30.775Z",
     "headers": [],
     "params": [
       {
@@ -80,11 +80,11 @@
     "colId": "19fa23f2-8b5d-4d0a-b60a-1af0280e5f41",
     "containerId": "f153aab9-e1da-4f91-838f-a50bcf0db17f",
     "name": "rebuild-price-index",
-    "url": "{{gct_api}}/admin/prices/rebuild-index/?useLocalfs={{useLocalfs}}",
+    "url": "{{gct_api}}/admin/prices/bgn/rebuild-index/?useLocalfs={{useLocalfs}}",
     "method": "POST",
     "sortNum": 10000,
     "created": "2023-03-04T13:19:45.913Z",
-    "modified": "2023-03-04T14:24:11.986Z",
+    "modified": "2023-03-05T19:07:46.483Z",
     "headers": [],
     "params": [
       {
@@ -104,12 +104,12 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2023-03-04T13:19:45.914Z",
-    "modified": "2023-03-04T14:24:15.509Z",
+    "modified": "2023-03-05T19:07:29.946Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"start\": \"2019/01/01\",\n  \"randValueKey\": \"price\",\n  \"prefix\": \"prices\",\n  \"randValueRange\": [500,200],\n  \"additionalProps\": {\n    \"currency\": \"BGN\"\n  },\n  \"tickStep\": 3600000\n  \n}",
+      "raw": "{\n  \"start\": \"2022/01/01\",\n  \"randValueKey\": \"price\",\n  \"prefix\": \"prices\",\n  \"randValueRange\": [500,500],\n  \"additionalProps\": {\n    \"currency\": \"BGN\"\n  },\n  \"tickStep\": 3600000\n  \n}",
       "form": []
     },
     "tests": [],
@@ -139,12 +139,12 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2023-03-04T13:39:08.201Z",
-    "modified": "2023-03-04T14:25:35.671Z",
+    "modified": "2023-03-05T12:10:39.707Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"start\": \"2012/01/01\",\n  \"randValueKey\": \"kwh\",\n  \"prefix\": \"usage\",\n  \"randValueRange\": [500,800],\n  \"tickStep\": 3600000\n}",
+      "raw": "{\n  \"start\": \"2022/12/01\",\n  \"randValueKey\": \"kwh\",\n  \"prefix\": \"usage\",\n  \"randValueRange\": [500,800],\n  \"tickStep\": 3600000\n}",
       "form": []
     },
     "tests": [],
@@ -155,11 +155,11 @@
     "colId": "19fa23f2-8b5d-4d0a-b60a-1af0280e5f41",
     "containerId": "0886366c-7423-4cac-8ca4-c22290127447",
     "name": "rebuild-usage-index",
-    "url": "{{gct_api}}/admin/usage/rebuild-index/?useLocalfs={{useLocalfs}}",
+    "url": "{{gct_api}}/admin/usage/kwh/rebuild-index/?useLocalfs={{useLocalfs}}",
     "method": "POST",
     "sortNum": 10000,
     "created": "2023-03-04T13:40:18.465Z",
-    "modified": "2023-03-04T14:25:33.487Z",
+    "modified": "2023-03-05T11:40:54.240Z",
     "headers": [],
     "params": [
       {
@@ -169,5 +169,20 @@
       }
     ],
     "tests": []
+  },
+  {
+    "_id": "4b890593-6154-483b-a759-972c9e9441ab",
+    "colId": "19fa23f2-8b5d-4d0a-b60a-1af0280e5f41",
+    "containerId": "0e53484d-69bf-41da-8124-9d299838bfee",
+    "name": "download-all-gcloud-data",
+    "url": "{{gct_api}}/admin/gcsdata/download",
+    "method": "POST",
+    "sortNum": 100000,
+    "created": "2023-03-05T18:44:37.177Z",
+    "modified": "2023-03-05T18:45:19.321Z",
+    "headers": [],
+    "params": [],
+    "tests": [],
+    "docs": "Genarates sample data from `start` to `end` or to current date if `end` is not provided"
   }
 ]

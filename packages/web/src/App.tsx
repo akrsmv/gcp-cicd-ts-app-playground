@@ -1,18 +1,20 @@
+import React from 'react';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import { ThemeProvider } from 'styled-components';
-import React, { useState } from 'react';
-import { HorizontalNavigation } from './components-layout/HorizontalNavigation';
-import { SideNavigation } from './components-layout/SideNavigation';
-// import { TVChartLight } from './components/TVChartLight'
-import { defaultTheme, ContainerStyled, MainStyled, ContentBoxesStyled, ContentStyled, FooterStyled, NivoContainerStyled, ContentStyled1 } from './components-layout/Theme';
+import { HorizontalNavigation } from './components/layout/HorizontalNavigation';
+import { SideNavigation } from './components/layout/SideNavigation';
+import { defaultTheme, ContainerStyled, MainStyled, ContentBoxesStyled, ContentStyled, FooterStyled, ContentStyled1, SSEContentStyled } from './components/layout/Theme';
 import { TVChartLight } from './components/TVChartLight';
 import { NivoPieChart } from './components/NivoPieChart';
+import { DailyAvgConsumptionNivo } from './components/DailyAvgConsumptionNivo';
+import { GctAppInfo } from './components/GctAppInfo';
+import { ServerSideEvents } from './components/ServerSideEvents';
+import { BarChart } from './components/BarChart';
 
 function App() {
-  //eslint-disable-next-line
   const [theme, _] = React.useState(defaultTheme)
   return (
     <BrowserRouter>
@@ -28,12 +30,12 @@ function App() {
           </MainStyled>
           <SideNavigation />
           <ContentBoxesStyled>
-            <ContentStyled1><NivoPieChart /></ContentStyled1>
-            <ContentStyled><>TODO: Nivo Bar chart here</></ContentStyled>
-            <ContentStyled><>TODO: Suggestions/News from SSE</></ContentStyled>
-            <ContentStyled>TODO: Suggestions/News from SSE</ContentStyled>
+            <NivoPieChart />
+            <DailyAvgConsumptionNivo />
+            <BarChart/>
+            <ServerSideEvents for={"some_topic"}/>
           </ContentBoxesStyled>
-          <FooterStyled>TODO: more messages from SSE? or Some footer</FooterStyled>
+          <FooterStyled><GctAppInfo /></FooterStyled>
         </ContainerStyled>
         <ToastContainer />
       </ThemeProvider>

@@ -132,6 +132,6 @@ jobs:
             --region $RUN_REGION \
             --vpc-connector gctapp-ew3 \
             --allow-unauthenticated \
-            --set-env-vars "BUCKET_NAME=toki-take-home-2023,TOKI_BUCKET_NAME=toki-take-home.appspot.com,TOKI_CREDENTIALS=/app/toki-credentials.json/toki-account-credentials,REDIS_CONNECTION_STRING=redis://redis-18153.c302.asia-northeast1-1.gce.cloud.redislabs.com:18153,GCT_ENV=DEV" \
+            --set-env-vars "BUCKET_NAME=toki-take-home-2023,REDIS_CONNECTION_STRING=redis://redis-18153.c302.asia-northeast1-1.gce.cloud.redislabs.com:18153,GCT_ENV=DEV" \
             --set-secrets=REDIS_PWD=secret-redis-cloud-db-pwd:1,/app/toki-credentials.json/toki-account-credentials=toki-account-credentials:latest \
             --port=$PORT

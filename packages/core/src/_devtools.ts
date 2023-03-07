@@ -1,16 +1,16 @@
 import { GetFilesOptions } from "@google-cloud/storage"
-import { timeStamp } from "console"
 import { R_OK } from "constants"
-import { createWriteStream, WriteStream } from "fs"
-import { access, appendFile, mkdir, opendir, readFile, rm, writeFile } from "fs/promises"
+import { createWriteStream } from "fs"
+import { access, mkdir, opendir, readFile, rm, writeFile } from "fs/promises"
 import { dirname, join } from "path"
-import { validateRequest } from "./dataStore"
-import { GetDataInput, YearMonthDay } from "./interfaces-private"
+import { recreateIndex } from "./dataStore"
+import { GctDataKind, GetDataInput } from "./interfaces-private"
 import { logwarn } from "./log"
 import { getGcsBucket } from "./serviceClients"
-import { strToYmd, withZero, dateToYmd, ymdToUTCDate } from "./utils"
+import { strToYmd, withZero, ymdToUTCDate } from "./utils"
 
-const _cacheDir = process.env.BUCKET_QUERIES_CACHE_DIRNAME || "localdev_files/bucket_queries_cache"
+const _cacheDir = process.env.LOCAL_TESTDATA_DIRNAME || "localdev_files/bucket_queries_cache"
+const _bucketDownloadDir = process.env.BUCKET_CACHE_DIRNAME || "__GCS"
 
 export const _loadFilesFromLocalMachine = async (startDir: string): Promise<[Buffer][]> => {
     const dirPath = join(_cacheDir,startDir)
@@ -72,7 +72,8 @@ export const generateSampleFiles = async (params: GenerateSampleData) => {
     }
 }
 
-export const removeSampleFiles = async () => {
+export const removeSampleFiles = async (indexInfo: GctDataKind) => {
+    await recreateIndex(indexInfo)
     await rm(dirname(join(_cacheDir)),{recursive: true, force: true})
 }
 
@@ -130,7 +131,7 @@ export const batchGetFiles = async (query?: GetFilesOptions): Promise<void> => {
         await Promise.all(files
             .filter(file => !file.name.endsWith("/"))
             .map(async file => {
-                const cachedPath = join("__GCS_DATA", file.name)
+                const cachedPath = join(_bucketDownloadDir, file.name)
                 await mkdir(dirname(cachedPath), { recursive: true })
                 await writeFile(cachedPath, await file.download())
             }))

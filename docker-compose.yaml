@@ -28,12 +28,12 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
-      - GCT_ENV=LOCALDEV
+      - GCT_ENV=LOCAL
       - PORT=8080
       - REDIS_CONNECTION_STRING=redis://gctapp-redis:6379
 
   redis:
-    image: redislabs/redistimeseries
+    image: redis/redis-stack
     container_name: gctapp-redis
     ports:
       - 6379:6379

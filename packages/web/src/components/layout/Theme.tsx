@@ -42,7 +42,7 @@ export const MainStyled = styled.main`
   width: 100%;
   height: 100%;
   color: black;
-  #full-space {
+  .full-space {
     width: 100%;
     height: 100%;
   }
@@ -65,15 +65,16 @@ export const ContentBoxesStyled = styled.div`
     }
 `;
 
-export const FooterStyled = styled.footer`
+export const FooterStyled = styled.footer.attrs(props => ({ id: "gct-app-info-panel" }))`
     background: ${({ theme: { colors } }) => colors.white};
-    color: ${({ theme: { colors } }) => colors.dark};
+    color: ${({ theme: { colors } }) => colors.orange};
     grid-area: footer;
     padding: 0.25rem;
     text-align: left;
-    border: 1px solid ${({ theme: { colors } }) => colors.onyx};
+    border: 1px solid ${({ theme: { colors } }) => colors.orange};
 `;
-export const SideBarStyled = styled.div`
+
+export const SideBarStyled = styled.div.attrs(props => ({ id: "dev-side-panel" }))`
     display: flex;
     flex-direction: column;
     flex-basis: content;
@@ -83,9 +84,28 @@ export const SideBarStyled = styled.div`
     padding: 0.25rem;
     border: 1px solid ${({ theme: { colors } }) => colors.onyx};
 
-    a#dev-link:hover {
-        text-transform: uppercase;
+    span#dev-link {
+        display: inline;
+        background: none;
+        border: none;
         text-decoration: none;
+        cursor: pointer;
+    }
+    span#dev-link:hover {
+        display: inline;
+        background: none;
+        border: none;
+        padding: 0!important;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    span#dev-link-yes:hover {
+        color: ${({ theme: { colors } }) => colors.orange};
+        display: inline;
+        background: none;
+        border: none;
+        text-decoration: none;
+        cursor: pointer;
     }
 
     #under-construction-img {
@@ -195,9 +215,23 @@ export const ContentStyled = styled.div`
   height: 100%;
 `;
 
-export const ContentStyled1 = styled(ContentStyled)`
+export const SSEContentStyled = styled(ContentStyled).attrs(props => ({id: "sse-suggestions"}))``;
+export const BarChartContentStyled = styled(ContentStyled).attrs(props => ({id: "bar-chart"}))``;
+export const ContentStyled1 = styled(ContentStyled).attrs(props => ({id: "avg-usage-chart"}))`
     background: white;
 `;
+export const PieChartStyled = styled(ContentStyled).attrs(props => ({id: "pie-chart"}))`
+    background: white;
+`;
+export const MainChartContentStyled = styled.div.attrs(props => ({ id: "main-chart", className: "full-space" }))``;
+
+export const TestDataGenConfigStyled = styled.div`
+display: block;
+with: 200px;
+height: 200px;
+background: ${({ theme: { colors } }) => colors.onyx};
+border-radius: 20px;
+`
 
 export const NivoContainerStyled = styled.div`
     with: 100%;
@@ -258,8 +292,8 @@ export const ButtonStyled = styled.button
 
 `;
 
+
 export const CheckBoxStyled = styled.input`   
     width: 20px;
     height: 20px;
 `;
-

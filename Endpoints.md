@@ -1,12 +1,24 @@
 
-Valid substitutions so far
+# `/{dataKind}/{dataUnit}/:yyyy/:mm/:dd?[d|m|y|l|r]`
+Request params substitutions so far supported
 ---
-- `dataKind` = prices and `dataUnit` = bgn
-- `dataKind` = usage and `dataUnit` = kwh
 
-# {dataKind}
+| `dataKind`        | `dataUnit`    |
+| ---               | ---           |
+| prices            | bgn           |
+| prices:daily_avg  | bgn           |
+| usage             | kwh           |
+| usage:daily_avg   | kwh           |
 
-`{dataKind}/{dataUnit}/:yyyy/:mm/:dd?[d|m|y]`
+Query parameters description
+| `parameter`   | `description`    |
+| ---           | ---           |
+| d             | days back from the start date that we want data for            |
+| m             | months back from the start date that we want data for      |
+| y             | years back from the start date that we want data for           |
+| r             | d|m|y parameters are relative. But if we want a fixed date, we can provide it via `r` parameter, eg `r=2022-11-03` or `r=2022/11/3` |
+| l             | despite the dates range specified, put a hard limit on amount of data           |
+# Examples
 
 `GET /{dataKind}/{dataUnit}`
 {dataKind} for today

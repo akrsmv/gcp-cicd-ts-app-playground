@@ -5,19 +5,23 @@ import { GetDataRequest } from './interfaces-public'
 import { GctDataKind, GetDataInput } from './interfaces-private'
 import { datePattern, validateInputDate, withZero, dateToYmd, ymdToUTCDate } from './utils'
 import { getGcsBucket, getMemoryStoreClient } from './serviceClients'
-import { _loadFilesFromLocalMachine } from './_devtools'
+import { generateSampleFiles, removeSampleFiles, _loadFilesFromLocalMachine } from './_devtools'
 import { GctError, GctErrorMessage } from './errors'
+import { TimeSeriesAggregationType } from 'redis'
+import { logerror } from './log'
+import { RangeOptions } from '@redis/time-series/dist/commands'
 
 /**
  * Validate and Transform incoming request
  * @param req
  */
 export const validateRequest = (req: GetDataRequest): GetDataInput => {
-    
     // get number representation of optional relative time params
-    const daysBack = Number(req.daysBack)
-    const monthsBack = Number(req.monthsBack)
-    const yearsBack = Number(req.yearsBack)
+    const daysBack = Number(req.daysBack),
+        monthsBack = Number(req.monthsBack),
+        yearsBack = Number(req.yearsBack),
+        limit = Number(req.limit)
+
 
     // verify requested date
     const result: GetDataInput = { end: validateInputDate({ ...req, setDefaultStartDate: true }) }
@@ -44,7 +48,21 @@ export const validateRequest = (req: GetDataRequest): GetDataInput => {
         const endDate = ymdToUTCDate(result.end)
         result.start = dateToYmd(new Date(new Date(endDate.setFullYear(endDate.getFullYear() - yearsBack)).setMonth(0)).setDate(1))
     }
+
+    if (limit && !Number.isNaN(limit)) {
+        result.limit = limit
+    }
+    
     return result
+}
+
+const prepareTSRangeOptions = (input: GetDataInput) => {
+    if (input.limit) {
+        return {
+            COUNT: input.limit
+        }
+    }
+    return undefined
 }
 
 /**
@@ -54,13 +72,35 @@ export const validateRequest = (req: GetDataRequest): GetDataInput => {
  * price data in requested range. If there is no range, i.e `params.range` is undefined, returns data only for the `start` date
  */
 export const getGctTSData = async (type: GctDataKind, params: GetDataRequest) => {
-    const input = validateRequest(params)
+    const input: GetDataInput = validateRequest(params)
+    const rangeOptions: RangeOptions | undefined = prepareTSRangeOptions(input)
+
     const end = new Date(`${input.end.year}-${withZero(input.end.month)}-${withZero(input.end.day)}T23:59:59.999Z`).getTime().toString()
     let start: string = new Date(`${input.end.year}-${withZero(input.end.month)}-${withZero(input.end.day)}T00:00:00.000Z`).getTime().toString()
     if (input.start) {
         start = new Date(`${input.start.year}-${withZero(input.start.month)}-${withZero(input.start.day)}T00:00:00.000Z`).getTime().toString()
     }
-    return await (await getMemoryStoreClient().ts.range(`${type.indexName}:${type.unit}`, start, end)); //.map(res => ({ time: res.timestamp/1000, value: res.value }))
+    return await getMemoryStoreClient().ts.range(`${type.indexName}:${type.unit}`, start, end, rangeOptions)
+}
+
+/**
+ * keeps the redis keys and rules we use so far
+ * @param index 
+ */
+export const recreateIndex = async (indexInfo: GctDataKind) => {
+    try {
+        await getMemoryStoreClient().del(`${indexInfo.indexName}:${indexInfo.unit}`)
+        await getMemoryStoreClient().del(`${indexInfo.indexName}:daily_avg:${indexInfo.unit}`)
+        await getMemoryStoreClient().ts.create(`${indexInfo.indexName}:${indexInfo.unit}`)
+        await getMemoryStoreClient().ts.create(`${indexInfo.indexName}:daily_avg:${indexInfo.unit}`)
+        await getMemoryStoreClient().ts.createRule(
+            `${indexInfo.indexName}:${indexInfo.unit}`,
+            `${indexInfo.indexName}:daily_avg:${indexInfo.unit}`,
+            TimeSeriesAggregationType.TWA, 86400000)
+    } catch (err) {
+        logerror(`Error recreating keys and rules for ${indexInfo.indexName}:${indexInfo.unit} `, err)
+        throw new GctError("GCTE502", GctErrorMessage.GCTE502)
+    }
 }
 
 /**
@@ -73,22 +113,33 @@ export const getGctTSData = async (type: GctDataKind, params: GetDataRequest) =>
  *  
  * @param index name of redis stream key
  */
-export const rebuildIndex = async (indexInfo: GctDataKind, useLocalfs?: boolean): Promise<void> => {
+export const rebuildIndex = async (indexInfo: GctDataKind, useLocalfs: boolean, generateSampleFilesPayload?: any): Promise<void> => {
     if (!indexInfo.indexName || !indexInfo.unit) {
         throw new GctError("GCTE50", GctErrorMessage["GCTE501"])
     }
-    await getMemoryStoreClient().del(`${indexInfo.indexName}:${indexInfo.unit}`)
+
+    await recreateIndex(indexInfo)
+
     let files: void | DownloadResponse[]
     // BEWARE 
     // data in buckets is not organized under different units,
     // therefore passing only indexName below
     if (useLocalfs) {
+        if (generateSampleFilesPayload) {
+            // so request is for generating test data first
+
+            // remove any old generated, since if the range requested is smaller, 
+            // those files will stay and data will be loaded into index as well
+            await removeSampleFiles(indexInfo)
+            // then generate newly requested
+            await generateSampleFiles(generateSampleFilesPayload)
+        }
         // simulate download from GCS
         files = await _loadFilesFromLocalMachine(indexInfo.indexName) as unknown as DownloadResponse[]
     } else {
         // download from GCS
         const transferManager = new TransferManager(getGcsBucket())
-        files = await transferManager.downloadManyFiles(indexInfo.indexName) 
+        files = await transferManager.downloadManyFiles(indexInfo.indexName)
     }
 
     //#region  ONLY NEEDED IF USING STREAMS (see below ts.ADD instead of .XADD)
@@ -128,7 +179,7 @@ export const rebuildIndex = async (indexInfo: GctDataKind, useLocalfs?: boolean)
         for (const valuePoint of mapSorted.values()) {
             // NB! previous approuch, where replacer/reviver was needed, because redis wanted string values only
             // getRedisClient().xAdd(`${indexInfo.indexName}:${indexInfo.unit}`, String(pricePoint.timestamp), JSON.parse(JSON.stringify(pricePoint, replacer), reviver))
-            
+
             // NB! 
             // adding either of price or kwh is present, just for this method to support both price and usage, not to branch it 
             getMemoryStoreClient().ts.ADD(`${indexInfo.indexName}:${indexInfo.unit}`, valuePoint.timestamp, valuePoint.price ?? valuePoint.kwh)

@@ -9,6 +9,7 @@ export enum GctErrorMessage {
 
     GCTE500 = "Invalid data query",
     GCTE501 = "Invalid index info",
+    GCTE502 = "Server Error. Please contact the administrators",
 
     GCTE900 = "Error generating sample data",
 }

@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { ButtonStyled, CheckBoxStyled, InputStyled } from "../../components-layout/Theme";
+import { ButtonStyled, CheckBoxStyled, InputStyled } from "../../components/layout/Theme";
 import { ITodoItemState, useTodoItemsStore } from "../stores/TodoItemsStore"
 import { PROJECT } from "./Project";
 

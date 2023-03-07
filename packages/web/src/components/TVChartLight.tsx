@@ -1,6 +1,8 @@
 import { createChart, ColorType } from 'lightweight-charts'
 import { useEffect, useRef, useState } from 'react'
+import { useHover } from '../hooks/useHover'
 import { usePriceAndUsageMergedStore } from '../stores/PriceAndUsageMergedStore'
+import { MainChartContentStyled } from './layout/Theme'
 
 export const TVChartLight = (props: any) => {
     const {
@@ -91,8 +93,12 @@ export const TVChartLight = (props: any) => {
         },
         [data, backgroundColor, lineColor, textColor, areaTopColor, areaBottomColor]
     )
-
+    const [hoverRef, isHovered] = useHover<HTMLDivElement>()
     return (
-        <div id='full-space' ref={chartContainerRef} />
+        // TODO hover hook not working properly here
+        // Probably TV component is overriding it?
+        <MainChartContentStyled  ref={hoverRef}> 
+            <div id="pie-chart" className='full-space' ref={chartContainerRef} />
+        </MainChartContentStyled>
     )
 }

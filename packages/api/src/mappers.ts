@@ -8,10 +8,11 @@ export const tsDataRange = (req: any): GetDataRequest => ({
     daysBack: req.query?.d,
     monthsBack: req.query?.m,
     yearsBack: req.query?.y,
+    limit: req.query?.l,
     range: req.query?.r,
     day: req.params?.day,
     month: req.params?.day,
-    year: req.params?.day
+    year: req.params?.day,
 })
 
 /**

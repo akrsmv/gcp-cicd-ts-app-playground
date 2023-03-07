@@ -6,5 +6,6 @@ export interface GetDataRequest {
     range?: string,
     daysBack?: string,
     monthsBack?: string,
-    yearsBack?: string
+    yearsBack?: string,
+    limit?: string
 }

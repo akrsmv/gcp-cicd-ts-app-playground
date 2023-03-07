@@ -8,6 +8,7 @@ import { GetDataRequest } from "./interfaces-public"
 export interface GetDataInput {
     start?: YearMonthDay,
     end: YearMonthDay
+    limit?: number
 }
 
 export interface YearMonthDay {

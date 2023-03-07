@@ -8,7 +8,7 @@
     "method": "GET",
     "sortNum": 60000,
     "created": "2023-03-04T13:19:45.910Z",
-    "modified": "2023-03-05T07:53:30.775Z",
+    "modified": "2023-03-06T15:43:11.358Z",
     "headers": [],
     "params": [
       {
@@ -42,11 +42,11 @@
     "colId": "19fa23f2-8b5d-4d0a-b60a-1af0280e5f41",
     "containerId": "f0828431-ae96-4b25-bc96-479dad92d0ed",
     "name": "usage",
-    "url": "{{gct_api}}/usage?y=1",
+    "url": "{{gct_api}}/usage/kwh?y=1",
     "method": "GET",
     "sortNum": 60000,
     "created": "2023-03-04T13:19:45.912Z",
-    "modified": "2023-03-04T13:28:49.993Z",
+    "modified": "2023-03-06T15:42:55.491Z",
     "headers": [],
     "params": [
       {
@@ -184,5 +184,124 @@
     "params": [],
     "tests": [],
     "docs": "Genarates sample data from `start` to `end` or to current date if `end` is not provided"
+  },
+  {
+    "_id": "1efb0744-b6c7-4278-85d5-d750a1a3c919",
+    "colId": "19fa23f2-8b5d-4d0a-b60a-1af0280e5f41",
+    "containerId": "e033a020-e359-48dc-b2c9-b620c62497cd",
+    "name": "prices - daily AVG",
+    "url": "{{gct_api}}/prices:daily_avg/bgn/?y=5&l=30",
+    "method": "GET",
+    "sortNum": 70000,
+    "created": "2023-03-06T15:41:31.343Z",
+    "modified": "2023-03-06T15:56:18.944Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "r",
+        "value": "2023/1/29",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "d",
+        "value": "1",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "m",
+        "value": "1",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "y",
+        "value": "5",
+        "isPath": false
+      },
+      {
+        "name": "l",
+        "value": "30",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "1b8c5069-b395-4c08-bd20-e1f0eebf8340",
+    "colId": "19fa23f2-8b5d-4d0a-b60a-1af0280e5f41",
+    "containerId": "f0828431-ae96-4b25-bc96-479dad92d0ed",
+    "name": "usage - daily AVG",
+    "url": "{{gct_api}}/usage:daily_avg/kwh?y=1",
+    "method": "GET",
+    "sortNum": 70000,
+    "created": "2023-03-06T15:42:16.735Z",
+    "modified": "2023-03-06T15:42:44.566Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "r",
+        "value": "2023/1/29",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "d",
+        "value": "1",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "m",
+        "value": "1",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "y",
+        "value": "1",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "7257d622-c869-4fd6-98f4-a9cbcd1b1757",
+    "colId": "19fa23f2-8b5d-4d0a-b60a-1af0280e5f41",
+    "containerId": "e033a020-e359-48dc-b2c9-b620c62497cd",
+    "name": "prices Copy",
+    "url": "{{gct_api}}/prices/bgn/?y=5",
+    "method": "GET",
+    "sortNum": 65000,
+    "created": "2023-03-06T16:28:43.223Z",
+    "modified": "2023-03-06T16:28:43.223Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "r",
+        "value": "2023/1/29",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "d",
+        "value": "1",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "m",
+        "value": "1",
+        "isDisabled": true,
+        "isPath": false
+      },
+      {
+        "name": "y",
+        "value": "5",
+        "isPath": false
+      }
+    ],
+    "tests": []
   }
 ]

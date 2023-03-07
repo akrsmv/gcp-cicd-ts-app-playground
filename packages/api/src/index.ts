@@ -21,15 +21,15 @@ app.get('/:dataKind/:dataUnit/:year?/:month?/:day?', async (req, res, next) => {
 })
 
 app.post('/admin/:dataKind/:dataUnit/rebuild-index', async (req, res, next) => {
-    res.send(await rebuildIndex(tsDataKind(req), !!req.query.useLocalfs).catch(next))
+    res.send(await rebuildIndex(tsDataKind(req), !!req.query.useLocalfs, req.body).catch(next))
 })
 
 app.post('/admin/sampledata/generate', async (req, res, next) => {
     res.send(await generateSampleFiles(req.body).catch(next))
 })
 
-app.post('/admin/sampledata/remove', async (req, res, next) => {
-    res.send(await removeSampleFiles().catch(next))
+app.post('/admin/:dataKind/:dataUnit/remove', async (req, res, next) => {
+    res.send(await removeSampleFiles(tsDataKind(req)).catch(next))
 })
 
 app.post('/admin/gcsdata/download', async (req, res, next) => {

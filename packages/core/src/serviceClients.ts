@@ -26,19 +26,12 @@ export const getMemoryStoreClient = () => {
 }
 export const getGcsStorage = (): Storage => {
     if (!_gcsStorage) {
-        _gcsStorage = process.env.GCT_ENV === "LOCALDEV" ? new Storage(
+        _gcsStorage = process.env.GCT_ENV === "LOCAL" ? new Storage(
             {
                 projectId: process.env.BUCKET_NAME,
                 keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS
             })
-            // Were credentials revoked?, use own then
-            // : process.env.GCT_ENV === "DEV" ? new Storage(
-            //     {
-            //         projectId: process.env.TOKI_BUCKET_NAME,
-            //         keyFilename: process.env.TOKI_CREDENTIALS
-            //     })
-                // if not localdev, Creates a client using Application Default Credentials
-                : new Storage()
+            : new Storage()
     }
     return _gcsStorage
 }

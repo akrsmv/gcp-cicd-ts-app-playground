@@ -1,30 +1,13 @@
-import { useCallback, useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { LoadDataParams, usePriceAndUsageMergedStore } from "../stores/PriceAndUsageMergedStore";
+import { useCallback } from "react";
+import { NavLink } from "react-router-dom";
+import { LoadDataParams, usePriceAndUsageMergedStore } from "../../stores/PriceAndUsageMergedStore";
 import { ContentBoxesStyled, ContentStyled, NavBarStyled } from "./Theme";
 
 export const HorizontalNavigation = () => {
 
     const priceAndUsageMergedStore = usePriceAndUsageMergedStore()
-    // const usageStore = useUsageStore()
 
-    // const [pricesData, setPricesData] = useState(priceStore.data)
-    // const [usageData, setUsageData] = useState(usageStore.data)
-    // const router = useLocation()
-
-
-    // // make sure you rerender when any of the stores used is updated update
-    // useEffect(() => usePriceStore.subscribe(
-    //     state => setPricesData(state.data)
-    // ), [])
-    // useEffect(() => useUsageStore.subscribe(
-    //     state => setUsageData(state.data)
-    // ), [])
-
-    const loadData = useCallback((params: LoadDataParams) => {
-        priceAndUsageMergedStore.load(params)
-        // usageStore.load(params)
-    }, [])
+    const loadData = useCallback((params: LoadDataParams) => priceAndUsageMergedStore.load(params), [])
 
     const ParentChildNav = (props: any) => {
         const parentlocation = Array.isArray(props.parent) ? props.parent.join('/') : props.parent??''

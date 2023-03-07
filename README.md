@@ -58,7 +58,7 @@ You are here                              | You want to reach here
 
 Example app context is: _Energy consumption optimization app._ 
 
-TODOS amd milestones
+TODOS and milestones
 (_Disclaimer:_ Im just starting with this, so milestones may change drasticly)
 
 #### Basic CICD  
@@ -90,7 +90,7 @@ __update__:  With Redis [Time Series](https://redis.io/docs/stack/timeseries/), 
 
 __update__:  
 [Basic documentation of endpoints](./Endpoints.md)
-Created myself price and usage random data generator, not to have to upload files each time a new dev case is to be tested. `rebuildIndex` method can work wither by downloading data from GCS or via the test data generator. Currently opened up myself an admin endpoint to send data generation config:
+Created myself price and usage random data generator, not to have to upload files each time a new dev case is to be tested. `rebuildIndex` method can work either by downloading data from GCS or via the test data generator. I  opened myself an admin endpoint to send data generation config, for ease of manual testing:
 ```javascript
 POST {{gct_api}}/admin/sampledata/generate
 {

@@ -21,7 +21,7 @@ export const Project = (props: any) => {
     // make sure you rerender when store updates
     useEffect(
         () => useTodoItemsStore.subscribe(
-            (state) => state.items, // zustane selector middleware, i.e subscribe only for changes on this property 
+            (state) => state.items, // zustand selector middleware, i.e subscribe only for changes on this property 
             setProjectTodoItems
         ), []
     )

@@ -5,16 +5,36 @@ I imagined a demo app called <span style="color:orange">@gctapp</span>.
 
 With this project I intend to warm up my react knowledge and also to get some GCP serverless experience. Also want to learn latest best practices around npm workspaces and monorepos 
 
-
-How to use this monorepo project
+How to use this monorepo
 ---
 download and install dependencies (`git clone ...` && `cd && npm install`)
+
+create a `.env` file `packages/api` with contents:
+
+```bash
+# THIS FILE IS ONLY FOR LOCAL DEVELOPMENT
+
+PORT=8080
+
+LOGLEVEL=debug
+GCT_ENV=LOCAL
+
+LOCAL_TESTDATA_DIRNAME=localdev_files/bucket_queries_cache
+BUCKET_CACHE_DIRNAME=GCS_FILES
+
+# NOTE the project can be explored localy without any google accout
+# however if you want to reload data from GCS it will complain
+BUCKET_NAME=<name of your bucket>
+GOOGLE_APPLICATION_CREDENTIALS=path to the credentials json 
+```
 
 `npm run web` Starts a regular react app in dev mode, default port `3000`
 
 `npm run build && npm run api` Starts the express API used, at port `8080`
 
-`npm run redis` NOTE: since data is being stored in Redis as time series, running the api is not enough, you need local redis
+`docker compose up redis --build -d` NOTE: since data is being stored in Redis as time series, running the api is not enough, you need local redis. This will 
+
+[This basic documentation of endpoints may be helpful](./Endpoints.md)
 
 
 __EDIT__ for the thoughts around redis + firebase or redis + mongo etc.. _Redis Enterprise has a huge progress_, and now it is being used as a central event bus, in reactive micro service architectures. 
@@ -40,22 +60,23 @@ TODOS amd milestones
     - gctapp/api (express)
 - CICD pipeline: Google actions + GCP Cloud Run
 
-__update__:  There are Github worklfow actions for the `dev` branch (for now only), which, upon commits in respective places will trigger a redeployment of API/WEB
+__update__:  There are Github worklfow actions for the `dev` branch (for now only), which, upon commits in respective places will trigger a redeployment of API or WEB
 
 #### Project structure and tech stack
 
 - pure npm monorepo (without lerna / nx)
-- redis + Firebase (Maybe later), or ~~Tick Stack + Firebase~~, oor only ~~firebase~~? Or just Redis Enterprise in Google.
+- redis + Firebase (Maybe later), or ~~Tick Stack + Firebase~~, oor only ~~firebase~~? Or just (__update:this choice__)Redis Enterprise in Google.
     - __DONE__~~I Reaaally wanna try out the Redis Time Series module~~
     - Research for a decent visualization library
-    - curretnly looking at Nivo
+    - Looking at Nivo
+    - Also, TradingView lightweight charts are free and very good 
 - tests
 
 __update__:  With Redis [Time Series](https://redis.io/docs/stack/timeseries/), I pull data from google storage and push them to redis time series (which is also a stream, but supports for real time downsampling, i.e aggregations, transformations etc). [Nivo](https://nivo.rocks/) looks great but for huge amount of data [requires more research](https://www.influxdata.com/blog/data-visualization-reactjs-nivo-influxdb/). On the other hand [Trading View lightweight charts](https://tradingview.github.io/lightweight-charts/tutorials/how_to/two-price-scales) behaves very well with litle sonfiguration
 
 #### Data Preparation
 
-- work 'offline' with some mock data. __DONE__~~Prepare Data generator~~
+- ~~work 'offline' with mock data~~, then __DONE__~~Prepare Data generator~~
 - webapp UX, visualizations of data in various views
 - tests
 

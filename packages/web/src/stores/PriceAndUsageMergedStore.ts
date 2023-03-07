@@ -19,6 +19,28 @@ export interface PriceAndUsageDataState {
     }
 }
 
+/**
+ * TODO utilize this and construc all new data with what is available
+ * 
+ * @param request executes one fetch,
+ * @returns any healthy response or undefined if errors ocurred
+ */
+const tryCallApi = async (request: any) => {
+    let jsonResult
+    const response = await fetch(request)
+    if (response.status === 200) {
+        try {
+            jsonResult = await response.json()
+        } catch (err) {
+            console.log('error in tryCallApi ', request, err)
+        }
+    } else {
+        console.log('error in tryCallApi parsing hson response ', request, response)
+        toast.error('error in tryCallApi parsing hson response')
+    }
+    return jsonResult
+} 
+
 const newData = async (params: LoadDataParams) => {
     const { periodCount, periodType } = params
     try {

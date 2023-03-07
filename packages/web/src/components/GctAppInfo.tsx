@@ -21,13 +21,13 @@ export const GctAppInfo = () => {
 
     useEffect(
         () => useWhatIsHoveredStore.subscribe(
-            (state) => state.hoveredElementDesc, // zustane selector middleware, i.e subscribe only for changes on this property 
+            (state) => state.hoveredElementDesc, // zustand selector middleware, i.e subscribe only for changes on this property 
             setState
         ), []
     )
     return (
         <div ref={hoverRef}>
-            <div id="gct-app-info-panel">info: {state} </div>
+            <div id="gct-app-info-panel">{"#>"} {state} </div>
         </div>
     )
 }

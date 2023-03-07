@@ -42,7 +42,7 @@ const ProceedWitTestDataGeneration = (props: any) => {
         </Popup>
     )
 }
-const flushIndexData = (index: string) => fetch(`${GCT_API}/admin/${index.replace(':','/')}/remove`, {
+const flushIndexData = (index: string) => fetch(`${GCT_API}/admin/${index.replace(':', '/')}/remove`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({})
@@ -59,13 +59,14 @@ const flushIndexData = (index: string) => fetch(`${GCT_API}/admin/${index.replac
 const rebuildIndex = (index: string, postPayload?: any) => {
 
     if (postPayload) {
-        // so we want to generate TEST data, swith on the index to add any non user populated data:
+        // so we want to generate TEST data
         switch (index) {
+            //depending on the index, add the non user populated, additional necessary data
             case "prices:bgn":
                 Object.assign(postPayload, {
                     "randValueKey": "price",
                     "prefix": "prices",
-                    "randValueRange": [postPayload.min, postPayload.max],
+                    "randValueRange": [Number(postPayload.min), Number(postPayload.max)],
                     "additionalProps": {
                         "currency": "BGN"
                     },
@@ -76,7 +77,7 @@ const rebuildIndex = (index: string, postPayload?: any) => {
                 Object.assign(postPayload, {
                     "randValueKey": "kwh",
                     "prefix": "usage",
-                    "randValueRange": [postPayload.min, postPayload.max],
+                    "randValueRange": [Number(postPayload.min), Number(postPayload.max)],
                     "tickStep": 3600000
                 })
                 break;
@@ -136,14 +137,14 @@ export const DevIndexManagement = (props: any) => {
             </p>
 
             <button onClick={() => selectionStore.updateSelection(selectedSection !== `Clear ${index} data` ? `Clear ${index} data` : '')}>
-                    Clear {title}
-                </button>
-                <p hidden={selectedSection !== `Clear ${index} data`}>
-                    <i>  Remove ${index} data without adding new one  </i>
-                    <span id="dev-link" onClick={() => flushIndexData(index).then(() => navigate("/dashboard/today"))}><u>Proceed</u></span>
-                    &nbsp;
-                    <span id="dev-link" onClick={() => selectionStore.updateSelection('')}><u>cancel</u></span>
-                </p>
+                Clear {title}
+            </button>
+            <p hidden={selectedSection !== `Clear ${index} data`}>
+                <i>  Remove ${index} data without adding new one  </i>
+                <span id="dev-link" onClick={() => flushIndexData(index).then(() => navigate("/dashboard/today"))}><u>Proceed</u></span>
+                &nbsp;
+                <span id="dev-link" onClick={() => selectionStore.updateSelection('')}><u>cancel</u></span>
+            </p>
 
         </>
     )

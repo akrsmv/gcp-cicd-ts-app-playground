@@ -1,6 +1,7 @@
 /**
  * For ease of test/mocking clients
  * wraped in getters/setters
+ * TODO: add tests
  */
 
 import { Bucket, Storage } from "@google-cloud/storage"

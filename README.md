@@ -40,9 +40,17 @@ GOOGLE_APPLICATION_CREDENTIALS=path to the credentials json
 __EDIT__ for the thoughts around redis + firebase or redis + mongo etc.. _Redis Enterprise has a huge progress_, and now it is being used as a central event bus, in reactive micro service architectures. 
 Basically you get all in one: (functionalities of Kafka and the app-synchronization of fire base or dynamodb, if you like), with litle maintanence and configuration
 
-So I will focus only on it, ofcourse thinking of some cold storage/backups etc. Insipired by this talk: 
+Insipired by this talk: 
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/odhL_bP9XTQ/0.jpg)](https://www.youtube.com/watch?v=odhL_bP9XTQ)
+
+
+So I will focus mainly on redis, ofcourse thinking of some cold storage/backups etc.
+
+You are here                              | You want to reach here
+---                                       | ---
+![Currently we are here](./currently.svg) | ![And I want to reach here](./envisioned.svg)
+
 
 ## Test for deployment in GCP Cloud Run:
 

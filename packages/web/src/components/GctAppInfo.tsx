@@ -2,6 +2,9 @@ import { useEffect, useState } from "react"
 import { useHover } from "../hooks/useHover"
 import { useWhatIsHoveredStore } from "../stores/HoveredElementStore"
 
+/**
+ * holding some descriptions to show if corresponding element is hovered
+ */
 export const hoveredElementsOfInterest = new Map<string, string>(
     [
         ["main-chart", "Both price and usage data are visualized with trading view library. "],
@@ -13,7 +16,10 @@ export const hoveredElementsOfInterest = new Map<string, string>(
         ["gct-app-info-panel", "This Panel shows brief description for currently hovered part of gctapp"]
     ]
 )
-
+/**
+ * 
+ * @returns Info panel, renders text based on what is being hovered
+ */
 export const GctAppInfo = () => {
     const [hoverRef, isHovered] = useHover<HTMLDivElement>();
     const hoveredStore = useWhatIsHoveredStore()

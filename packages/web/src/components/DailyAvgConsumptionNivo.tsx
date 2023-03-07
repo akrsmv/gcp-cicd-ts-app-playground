@@ -5,90 +5,24 @@ import { useHover } from '../hooks/useHover'
 import { usePriceAndUsageMergedStore } from '../stores/PriceAndUsageMergedStore'
 
 export const DailyAvgConsumptionNivo = (props: any) => {
-    // make sure you rerender when any of the stores used is updated update
-    const priceAndUsageMergedStore = usePriceAndUsageMergedStore()
-    const [data, setData] = useState([{ id: "avg usage", data: [{ "x": 0, "y": 0 }] }])
+    const [data, setData] = useState([{ id: "Last 60 hours AVG usage", data: [{ "x": '0', "y": 0 }] }])
 
     useEffect(() => usePriceAndUsageMergedStore.subscribe(
         state => state.daily_avg.usage,
         avg_usage => {
-            console.log("rendim: ", avg_usage)
             setData([
                 {
-                    id: "avg usage",
-                    // @ts-ignore
-                    data: avg_usage.map(d => ({ x: new Date(d.timestamp).getDate(), y: d.value }))
+                    id: "Last 60 hours AVG usage", // 5*12 hours = 60 (this component registers for 12h average time series)
+                    data: avg_usage.map(d => {
+                        // @ts-ignore TODO define td interface for data type, and remove ts-ignore
+                        return { x: new Date(d.timestamp).toLocaleTimeString(), y: d.value }
+                    })
                 }])
         }
     ), [])
-    // pull necessary utilities from global model
-    // const loadData = useCallback((loadDataParams: LoadDataParams) => priceStore.load(loadDataParams), [priceStore])
-
-    // defend against no data in store (for some reason!? TODO)
-    // useEffect(() => {
-    //     if (!priceStore.data.length) {
-    //         loadData({periodCount:1, periodType:'d'})
-    //     }
-    // },[])
-
-    // const [priceData, setPricedata] = useState<{ id: string, data: { x: string, y: any }[] }[]>([{ id: "El. Price", data: priceStore.data }])//[{id:"El. Price", data: []}]
-    // /**
-    //  * @param year 
-    //  * @param month 
-    //  * @returns The total number of days in a particular month
-    //  */
-    // const getDaysInMonth = (year: number, month: number) => {
-    //     return new Date(year, month, 0).getDate();
-    // }
-    // /**
-    //  * @param year 
-    //  * @param month 
-    //  * @returns The total number of days in a particular month
-    //  */
-    //     const getDaysInYear = (year: number) => {
-    //         let sumdays = 0
-    //         for (let i = 1; i <= 12; i ++) {
-    //             sumdays += new Date(year, i, 0).getDate();
-    //         }
-    //         return sumdays
-    //     }
-    // useEffect(() => usePriceStore.subscribe(
-    //     state => {
-    //         console.log("refreshiin ", state.data)
-
-    // const totalDays = state.data.length / 24
-
-    // const chartMappedData = state.data.map(d => {
-    //     // @ts-ignore       
-    //     // const pointDate = new Date(Number(d.time + '000'))
-    //     // const isoDate = pointDate.toISOString()
-    //     // const ampm = pointDate.toLocaleTimeString().slice(-2)
-    //     // const hours = isoDate.slice(11, 13)
-    //     // const days = isoDate.slice(8, 10)
-    //     // const month = isoDate.slice(5, 7)
-    //     // const year = isoDate.slice(0, 4)
-
-    //     // let xAxis = hours + ampm
-    //     // if (totalDays > 24 && totalDays <= getDaysInMonth(Number(year), Number(month))) {
-    //     //     xAxis = days + "," + xAxis
-    //     // }
-    //     // if (totalDays > getDaysInMonth(Number(year), Number(month)) && totalDays <= getDaysInYear(Number(year))) {
-    //     //     xAxis = month + "," + days + "," + xAxis
-    //     // }
-    //     // if (totalDays > getDaysInYear(Number(year))) {
-    //     //     xAxis = year + "," + month + "," + days + "," + xAxis
-    //     // }
-
-    //     // const 
-    //     // @ts-ignore    //new Date(Number(d.time + '000')).toISOString().slice(11, 15)    
-    //     return { x: new Date(Number(d.time + '000')).toISOString(), y: d.value }
-    // })
-    // console.log("CLIENT DATA", chartMappedData)
-    // setPricedata([{ id: "El. Price", data: state.data }])
-    //     }
-    // ), [])
+    
+    // for our info panel, register globally if this element is hovered
     const [hoverRef, isHovered] = useHover<HTMLDivElement>()
-
     return (
         <ContentStyled1 ref={hoverRef}>
             <NivoContainerStyled >
@@ -148,15 +82,15 @@ export const DailyAvgConsumptionNivo = (props: any) => {
                             symbolSize: 12,
                             symbolShape: 'circle',
                             symbolBorderColor: 'rgba(0, 0, 0, .5)',
-                            // effects: [
-                            //     {
-                            //         on: 'hover',
-                            //         style: {
-                            //             itemBackground: 'rgba(0, 0, 0, .03)',
-                            //             itemOpacity: 1
-                            //         }
-                            //     }
-                            // ]
+                            effects: [
+                                {
+                                    on: 'hover',
+                                    style: {
+                                        itemBackground: 'rgba(0, 0, 0, .03)',
+                                        itemOpacity: 1
+                                    }
+                                }
+                            ]
                         }
                     ]}
                 />

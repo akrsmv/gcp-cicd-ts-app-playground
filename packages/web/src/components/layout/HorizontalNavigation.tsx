@@ -25,7 +25,8 @@ export const HorizontalNavigation = () => {
                             <ParentChildNav parent="dashboard" label="Month" onClick={async () => await loadData({ periodCount: 1, periodType: "m" })} />
                             <ParentChildNav parent="dashboard" label="Quarter" onClick={async () => await loadData({ periodCount: 3, periodType: "m" })} />
                             <ParentChildNav parent="dashboard" label="Year" onClick={async () => await loadData({ periodCount: 1, periodType: "y" })} />
-                            <ParentChildNav parent="dashboard" label="Pick Range" onClick={async () => await loadData({ periodCount: 1, periodType: "d" })} />
+                            {/* TODO Date Range Component, use Nivo? https://nivo.rocks/time-range/ */}
+                            {/* <ParentChildNav parent="dashboard" label="Pick Range" onClick={async () => await loadData({ periodCount: 1, periodType: "d" })} /> */}
                         </ul>
                     </ContentStyled>
                     <ContentStyled>

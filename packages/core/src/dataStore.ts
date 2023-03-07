@@ -96,7 +96,7 @@ export const recreateIndex = async (indexInfo: GctDataKind) => {
         await getMemoryStoreClient().ts.createRule(
             `${indexInfo.indexName}:${indexInfo.unit}`,
             `${indexInfo.indexName}:daily_avg:${indexInfo.unit}`,
-            TimeSeriesAggregationType.TWA, 86400000)
+            TimeSeriesAggregationType.AVG, 12)
     } catch (err) {
         logerror(`Error recreating keys and rules for ${indexInfo.indexName}:${indexInfo.unit} `, err)
         throw new GctError("GCTE502", GctErrorMessage.GCTE502)

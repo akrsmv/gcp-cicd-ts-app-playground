@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { NavigateFunction, useLocation, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import Popup from "reactjs-popup"
 import { create } from "zustand"
@@ -22,6 +22,18 @@ const useSelection =
         })
     )
 
+/** we refresh chart by simply navigating somewhere else
+ * which will cause data reload
+ * TODO do better
+ */
+const refreshChart = (navigationFunction: NavigateFunction, currentPath: string) => {
+    if (!currentPath.includes("today")) {
+        navigationFunction("dashboard/today")
+    } else {
+        navigationFunction("dashboard/month")
+    }
+}
+
 const ProceedWitTestDataGeneration = (props: any) => {
     // at this point index may be 'prices:bgn' or 'usage:kwh'
     // we want to take only the head part, so we know 
@@ -29,6 +41,7 @@ const ProceedWitTestDataGeneration = (props: any) => {
     const [indexName] = props.index.split(':')
     const selectionStore = useSelection()
     const navigate = useNavigate()
+    const location = useLocation()
 
     return (
         <Popup trigger={<span id="dev-link"><u>Proceed</u></span>} position="right center">
@@ -37,7 +50,7 @@ const ProceedWitTestDataGeneration = (props: any) => {
                 <div><InputStyled onChange={(e) => selectionStore.updatePostPayload({ ...selectionStore.postPayload, end: e.target.value })} type="date" placeholder="end date" /></div>
                 <div><InputStyled onChange={(e) => selectionStore.updatePostPayload({ ...selectionStore.postPayload, min: e.target.value })} type="number" placeholder={`MIN ${indexName} range`} /></div>
                 <div><InputStyled onChange={(e) => selectionStore.updatePostPayload({ ...selectionStore.postPayload, max: e.target.value })} type="number" placeholder={`MAX ${indexName} range`} /></div>
-                <button onClick={() => rebuildIndex(props.index, selectionStore.postPayload).then(() => navigate("/dashboard/today"))}>GO</button>
+                <button onClick={() => rebuildIndex(props.index, selectionStore.postPayload).then(() => refreshChart(navigate, location.pathname))}>GO</button>
             </TestDataGenConfigStyled>
         </Popup>
     )
@@ -100,6 +113,7 @@ const rebuildIndex = (index: string, postPayload?: any) => {
 export const DevIndexManagement = (props: any) => {
     const { index, title } = props
     const navigate = useNavigate()
+    const location = useLocation()
 
     const selectionStore = useSelection()
     const [selectedSection, setSelectedSection] = useState(selectionStore.selected)
@@ -119,7 +133,7 @@ export const DevIndexManagement = (props: any) => {
             </button>
             <p hidden={selectedSection !== `${reloadFromGCSData}/${index}}`}>
                 Flush redis <i> {props.index} </i> key and reload it from from <i>GCS</i>?
-                <span id="dev-link" onClick={() => rebuildIndex(index).then(() => navigate("/dashboard/today"))}><u>Proceed</u></span>
+                <span id="dev-link" onClick={() => rebuildIndex(index).then(() => refreshChart(navigate, location.pathname))}><u>Proceed</u></span>
                 &nbsp;
                 <span id="dev-link" onClick={() => selectionStore.updateSelection('')}><u>cancel</u></span>
             </p>
@@ -141,11 +155,10 @@ export const DevIndexManagement = (props: any) => {
             </button>
             <p hidden={selectedSection !== `Clear ${index} data`}>
                 <i>  Remove ${index} data without adding new one  </i>
-                <span id="dev-link" onClick={() => flushIndexData(index).then(() => navigate("/dashboard/today"))}><u>Proceed</u></span>
+                <span id="dev-link" onClick={() => flushIndexData(index).then(() => refreshChart(navigate, location.pathname))}><u>Proceed</u></span>
                 &nbsp;
                 <span id="dev-link" onClick={() => selectionStore.updateSelection('')}><u>cancel</u></span>
             </p>
-
         </>
     )
 }

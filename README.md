@@ -34,11 +34,13 @@ OR, even fastest, why not just use [firebase](https://www.geeksforgeeks.org/how-
 
 My experience is more in AWS, and I never used firebase before, although had the chance to extensivly use [aws amplify](https://www.bairesdev.com/blog/amplify-vs-firebase-which-one-is-best/) which seems with pretty same idea.
 
-[AmplifyJs](https://docs.amplify.aws/) gives you the gate keys to connecting all aws backend services in your frontend app, [so I want to try](https://www.youtube.com/watch?v=SXmYUalHyYk&t=306s) out [firebase](https://firebase.google.com/) to do the same (later, when I start with multitenancy using google cloud).  
+[AmplifyJs](https://docs.amplify.aws/) gives you the gate keys to connecting all aws backend services in your frontend app, [so I want to try](https://www.youtube.com/watch?v=SXmYUalHyYk&t=306s) out [firebase](https://firebase.google.com/) to do the same (later, when I start with multitenancy using google cloud) or, for better cloud-lock freedom - [superbase](https://supabase.com/).  
 
 ### Expanding the scope 
 
-For our energy optimization app, obviously we want to vizualize data, but also _we may want to analyze it first_ so that we also vizualize suggestions and any other (useful notifications [TODO link possible notifications])[] . I wanted to gain new knowledge, so lets re-define the example context of this project like this:
+For our energy optimization app, obviously we want to vizualize data, but also _we may want to analyze it first_ so that we also vizualize suggestions and any other (useful notifications [TODO link possible notifications])[] . 
+
+I could assume this analyse-suggest services are just another 'sophosticated backend' from which I only consume data(ofcourse, the correct thinking), however, then the scope of this project will shrink to a standard firebase app only ([this example](https://www.youtube.com/watch?v=zQyrwxMPm88&t=18s), but with graphics instead of chats). And I wanted to gain new knowledge, so lets re-define the example context of this project like this:
 
   1. various analyses of usage vs price
   2. generating suggestions (and storing the data for them somewhere)
@@ -62,6 +64,7 @@ You are here                              | You want to reach here
 ![Currently we are here](./currently.svg) | ![And I want to reach here](./envisioned.svg)
 
 
+So the `ServiceN` we want it to be one of our real-time data analysers, and data output from it to be pushed to react app using redis pub/sub and server side events in the react app (without helpers from firebase/superbase)
 
 How to use this monorepo
 ---

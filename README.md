@@ -3,7 +3,65 @@
 This is a test project! 
 I imagined a demo app called <span style="color:orange">@gctapp</span>.
 
-With this project I intend to warm up my react knowledge and also to get some GCP serverless experience. Also want to learn latest best practices around npm workspaces and monorepos 
+With this project I intend to warm up my react knowledge and also to get some GCP serverless experience. Also want to learn latest best practices around npm workspaces and monorepos.
+
+## Example app context will be: _Energy consumption optimization app._ 
+
+### Data starting point 
+
+Lets say, there is a complex backend that collects data from sensors and saves it in jsonlines files for each day. Further, these files will be stored timestamp-like paths in GCS Storage.
+
+El. prices example `/prices/{year}/{month}/{day}.jsonl`:
+```
+{ "timestamp": 1649732400, "price": 0.12, "currency": "BGN"}
+{ "timestamp": 1649736000, "price": 0.13, "currency": "BGN"}
+```
+El. usage example `/usage/{year}/{month}/{day}/{metering_point_id}.jsonl`
+```
+{ "timestamp": 1649732400, "kwh": 0.5}
+{ "timestamp": 1649736000, "kwh": 0.6}
+``` 
+
+### Decoupled from backend
+
+Even this monorepo contains `web` _and_ `api` / `core` part, we will look at all of them just as frontend, i.e the vizualization app, for the bigger complex backend that deals with sensors, collects data and so on.
+
+### Technical design
+
+There is a pretty straight forward path there, in which we have express API that just covers up the credentials for GCS (not to expose them in static react app), downloads corresponding requested data files from GCS, and serves them to the react app. From there on, its a matter of choosing the chart libraries, resect the data format they expect (i.e transform the jsonlines to what charts javascript will understand) , and thats it.
+
+OR, even fastest, why not just use [firebase](https://www.geeksforgeeks.org/how-to-get-download-link-of-uploaded-files-in-firebase-storage-in-reactjs/)
+
+My experience is more in AWS, and I never used firebase before, although had the chance to extensivly use [aws amplify](https://www.bairesdev.com/blog/amplify-vs-firebase-which-one-is-best/) which seems with pretty same idea.
+
+[AmplifyJs](https://docs.amplify.aws/) gives you the gate keys to connecting all aws backend services in your frontend app, [so I want to try](https://www.youtube.com/watch?v=SXmYUalHyYk&t=306s) out [firebase](https://firebase.google.com/) to do the same (later, when I start with multitenancy using google cloud).  
+
+### Expanding the scope 
+
+For our energy optimization app, obviously we want to vizualize data, but also _we may want to analyze it first_ so that we also vizualize suggestions and any other (useful notifications [TODO link possible notifications])[] . I wanted to gain new knowledge, so lets re-define the example context of this project like this:
+
+  1. various analyses of usage vs price
+  2. generating suggestions (and storing the data for them somewhere)
+  3. vizualizing prices/usage data realtime, once it landed (being appended to corresponding jsonline files for the current day)
+  4. vizualizing any new suggestions realtime as they get produced by our suggestion-for-optimization services
+
+
+__EDIT__ I had thoughts whether to use redis + firebase or redis + mongo etc.. Or only redis for the initial POC. _Redis Enterprise has a huge progress_, and now it is being used as a central event bus, in reactive micro service architectures. Basically you get all in one: (functionalities of Kafka and the app-synchronization of fire base or dynamodb, if you like), with litle maintanence and configuration. 
+
+_So I will focus only on redis, ofcourse thinking of some cold storage/backups_
+
+Insipired by this talk: 
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/odhL_bP9XTQ/0.jpg)](https://www.youtube.com/watch?v=odhL_bP9XTQ)
+
+
+
+
+You are here                              | You want to reach here
+---                                       | ---
+![Currently we are here](./currently.svg) | ![And I want to reach here](./envisioned.svg)
+
+
 
 How to use this monorepo
 ---
@@ -26,6 +84,11 @@ BUCKET_CACHE_DIRNAME=GCS_FILES
 # however if you want to reload data from GCS it will complain
 BUCKET_NAME=<name of your bucket>
 GOOGLE_APPLICATION_CREDENTIALS=path to the credentials json 
+
+# NOTE if you want to access another GCP GCS Bucket from withing your test google account
+# 1. you need to add a separate pair of above variables
+# 2. you need to pass them as environment variables to the running countainer see .github/workflows/wf-gctappapi-dev-v2.yml
+# 3. depending on the environment you want to use them, change the initialization of gcs bucket in serviceClients.ts
 ```
 
 `npm run web` Starts a regular react app in dev mode, default port `3000`
@@ -34,29 +97,14 @@ GOOGLE_APPLICATION_CREDENTIALS=path to the credentials json
 
 `docker compose up redis --build -d` NOTE: since data is being stored in Redis as time series, running the api is not enough, you need local redis. This will 
 
-[This basic documentation of endpoints may be helpful](./Endpoints.md)
-
-
-__EDIT__ for the thoughts around redis + firebase or redis + mongo etc.. _Redis Enterprise has a huge progress_, and now it is being used as a central event bus, in reactive micro service architectures. 
-Basically you get all in one: (functionalities of Kafka and the app-synchronization of fire base or dynamodb, if you like), with litle maintanence and configuration
-
-Insipired by this talk: 
-
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/odhL_bP9XTQ/0.jpg)](https://www.youtube.com/watch?v=odhL_bP9XTQ)
-
-
-So I will focus mainly on redis, ofcourse thinking of some cold storage/backups etc.
-
-You are here                              | You want to reach here
----                                       | ---
-![Currently we are here](./currently.svg) | ![And I want to reach here](./envisioned.svg)
+[Basic documentation of endpoints in place](./Endpoints.md)
 
 
 ## Test for deployment in GCP Cloud Run:
 
 `docker compose up` Images are being prepared and tested locally, ~~pending is a test deployment in GCP~~
 
-Example app context is: _Energy consumption optimization app._ 
+
 
 TODOS and milestones
 (_Disclaimer:_ Im just starting with this, so milestones may change drasticly)

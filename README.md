@@ -28,9 +28,9 @@ Even this monorepo contains `web` _and_ `api` / `core` part, we will look at all
 
 ### Technical design
 
-There is a pretty straight forward path there, in which we have express API that just covers up the credentials for GCS (not to expose them in static react app), downloads corresponding requested data files from GCS, and serves them to the react app. From there on, its a matter of choosing the chart libraries, resect the data format they expect (i.e transform the jsonlines to what charts javascript will understand) , and thats it.
+There is a pretty straight forward path there, in which we have express API that just downloads files from GCS, and serves them to the react app. From there on, its a matter of choosing the chart libraries.
 
-OR, even fastest, why not just use [firebase](https://www.geeksforgeeks.org/how-to-get-download-link-of-uploaded-files-in-firebase-storage-in-reactjs/)
+_OR, even fastest, why not just use_ [firebase](https://www.geeksforgeeks.org/how-to-get-download-link-of-uploaded-files-in-firebase-storage-in-reactjs/) without any axpress API
 
 My experience is more in AWS, and I never used firebase before, although had the chance to extensivly use [aws amplify](https://www.bairesdev.com/blog/amplify-vs-firebase-which-one-is-best/) which seems with pretty same idea.
 
